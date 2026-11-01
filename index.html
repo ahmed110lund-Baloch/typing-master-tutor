@@ -1,0 +1,458 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10243a">
+<title>Typing Master - Keyboard Tutor</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#f1f5f9;
+ color:#172b43;
+}
+header{
+ background:#10243a;
+ color:white;
+ padding:22px 15px;
+ text-align:center;
+}
+header h1{margin:0;font-size:27px}
+header p{color:#cbd5e1;margin-bottom:0}
+.container{
+ max-width:950px;
+ margin:auto;
+ padding:18px;
+}
+.card{
+ background:white;
+ padding:18px;
+ border-radius:13px;
+ margin-bottom:16px;
+ box-shadow:0 2px 9px #0000000d;
+}
+h2{font-size:20px;margin-top:0}
+select,button,textarea{
+ font:inherit;
+}
+select{
+ width:100%;
+ padding:12px;
+ border:1px solid #cbd5e1;
+ border-radius:8px;
+ background:white;
+}
+.stats{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ text-align:center;
+}
+.stat{
+ background:#eaf2fa;
+ padding:13px 5px;
+ border-radius:9px;
+}
+.stat strong{
+ display:block;
+ font-size:23px;
+ color:#087e8b;
+}
+.stat span{font-size:12px;color:#526477}
+.lessons{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+}
+.lesson{
+ border:1px solid #dbe3eb;
+ padding:13px;
+ border-radius:9px;
+ background:white;
+ cursor:pointer;
+ text-align:left;
+}
+.lesson:hover{border-color:#087e8b}
+.lesson small{display:block;margin-top:6px;color:#64748b}
+.free{color:#16834a;font-weight:bold}
+.lock{color:#c27a13;font-weight:bold}
+button{
+ border:0;
+ border-radius:8px;
+ padding:12px 18px;
+ background:#087e8b;
+ color:white;
+ cursor:pointer;
+ font-weight:bold;
+}
+button:disabled{opacity:.5}
+textarea{
+ width:100%;
+ height:105px;
+ padding:14px;
+ border:2px solid #cbd5e1;
+ border-radius:9px;
+ font-size:19px;
+ resize:vertical;
+ outline:none;
+}
+textarea:focus{border-color:#087e8b}
+.target{
+ background:#f1f5f9;
+ padding:15px;
+ border-radius:9px;
+ font-size:21px;
+ line-height:1.8;
+ word-break:break-word;
+}
+.correct{color:#16834a}
+.wrong{color:#dc2626;background:#fee2e2}
+.current{background:#fef3c7}
+.keyboard{
+ display:grid;
+ gap:5px;
+ margin-top:15px;
+}
+.keyrow{
+ display:flex;
+ justify-content:center;
+ gap:4px;
+}
+.key{
+ background:#dce6ef;
+ padding:10px 0;
+ border-radius:5px;
+ text-align:center;
+ flex:1;
+ max-width:52px;
+ font-size:12px;
+ box-shadow:0 2px 2px #94a3b8;
+}
+.key.active{background:#087e8b;color:white}
+.space{max-width:250px;flex:5}
+.hidden{display:none}
+.notice{
+ background:#fff7df;
+ padding:12px;
+ border-radius:8px;
+ color:#76520a;
+ font-size:13px;
+}
+footer{text-align:center;padding:20px;color:#64748b}
+@media(max-width:550px){
+ .container{padding:10px}
+ .lessons{grid-template-columns:1fr}
+ .key{font-size:10px;padding:9px 0}
+ header h1{font-size:23px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>⌨️ TYPING MASTER</h1>
+<p>Learn Typing Anywhere, Anytime</p>
+</header>
+
+<main class="container">
+
+<div class="card">
+<h2>Choose Your Keyboard</h2>
+<select id="layout" onchange="changeLayout()">
+<option value="QWERTY">English QWERTY</option>
+<option value="AZERTY">French AZERTY</option>
+<option value="QWERTZ">German QWERTZ</option>
+</select>
+</div>
+
+<div class="card">
+<h2>Your Typing Progress</h2>
+<div class="stats">
+<div class="stat">
+<strong id="wpm">0</strong>
+<span>WPM</span>
+</div>
+<div class="stat">
+<strong id="accuracy">100%</strong>
+<span>Accuracy</span>
+</div>
+<div class="stat">
+<strong id="time">0</strong>
+<span>Seconds</span>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>Typing Lessons</h2>
+<div class="lessons" id="lessons"></div>
+</div>
+
+<div class="card" id="practice">
+<h2 id="lessonTitle">Start Your Typing Practice</h2>
+
+<p>Type the following text using your physical keyboard:</p>
+
+<div class="target" id="target">
+Select a lesson to begin.
+</div>
+
+<br>
+
+<textarea id="typing" placeholder="Click here and start typing..." disabled></textarea>
+
+<br><br>
+
+<button onclick="resetPractice()">Restart Lesson</button>
+
+<button onclick="finishPractice()">Finish Test</button>
+
+<div id="result"></div>
+
+<div class="notice" style="margin-top:15px">
+Tip: For real computer typing practice, connect a USB keyboard to your mobile using an OTG adapter. You can also use your laptop or desktop keyboard.
+</div>
+</div>
+
+<div class="card">
+<h2>Virtual Keyboard</h2>
+<p>Use this keyboard picture to learn key positions.</p>
+<div class="keyboard" id="keyboard"></div>
+</div>
+
+<div class="card">
+<h2>Premium Lessons 🔒</h2>
+<p>Unlock advanced typing lessons, complete keyboard training, number practice, symbols and professional speed tests.</p>
+<button onclick="alert('Premium courses and secure payment will be added in a future version.')">
+Explore Premium
+</button>
+</div>
+
+</main>
+
+<footer>
+Typing Master - Learn, Practice and Improve
+</footer>
+
+<script>
+
+const lessons = [
+{
+name:"Home Row",
+level:"FREE",
+text:"asdf jkl; asdf jkl; fdsa ;lkj"
+},
+{
+name:"Home Row Words",
+level:"FREE",
+text:"sad dad ask fall salad flask"
+},
+{
+name:"Upper Row - E I R U",
+level:"FREE",
+text:"er iu re ui erie ruler"
+},
+{
+name:"Upper Row - Advanced",
+level:"PREMIUM",
+text:"qwerty uiop power quiet write"
+},
+{
+name:"Bottom Row - C M",
+level:"FREE",
+text:"cm mc cmc mcm come calm"
+},
+{
+name:"Bottom Row - Advanced",
+level:"PREMIUM",
+text:"zxcvbnm mix zoom move zinc"
+},
+{
+name:"Number Practice",
+level:"FREE",
+text:"1 2 5 12 25 51 125"
+},
+{
+name:"Advanced Numbers",
+level:"PREMIUM",
+text:"1234567890 0987654321"
+},
+{
+name:"Symbols Practice",
+level:"PREMIUM",
+text:"! @ # $ % ^ & * ( ) , . ?"
+},
+{
+name:"Paragraph Practice",
+level:"PREMIUM",
+text:"Practice every day to improve your typing speed and accuracy."
+}
+];
+
+let selected = null;
+let started = false;
+let startTime = 0;
+let timer = null;
+let errors = 0;
+
+function showLessons(){
+ const area=document.getElementById("lessons");
+ area.innerHTML="";
+ lessons.forEach((l,i)=>{
+  const b=document.createElement("button");
+  b.className="lesson";
+  b.innerHTML=`<strong>${l.name}</strong>
+  <small class="${l.level==="FREE"?"free":"lock"}">
+  ${l.level==="FREE"?"✓ FREE":"🔒 PREMIUM"}
+  </small>`;
+  b.onclick=()=>{
+   if(l.level==="PREMIUM"){
+    alert("This is a Premium lesson. Premium access will be added later.");
+    return;
+   }
+   startLesson(i);
+  };
+  area.appendChild(b);
+ });
+}
+
+function startLesson(i){
+ selected=i;
+ started=false;
+ clearInterval(timer);
+ errors=0;
+ document.getElementById("lessonTitle").textContent=lessons[i].name;
+ document.getElementById("target").textContent=lessons[i].text;
+ document.getElementById("typing").value="";
+ document.getElementById("typing").disabled=false;
+ document.getElementById("typing").focus();
+ document.getElementById("result").textContent="";
+ document.getElementById("wpm").textContent="0";
+ document.getElementById("accuracy").textContent="100%";
+ document.getElementById("time").textContent="0";
+ updateTarget();
+}
+
+function updateTarget(){
+ const input=document.getElementById("typing").value;
+ const target=lessons[selected].text;
+ let html="";
+ for(let i=0;i<target.length;i++){
+  let cls="";
+  if(i<input.length){
+   cls=input[i]===target[i]?"correct":"wrong";
+  }else if(i===input.length){
+   cls="current";
+  }
+  html+=`<span class="${cls}">${target[i]===" "?"&nbsp;":target[i]}</span>`;
+ }
+ document.getElementById("target").innerHTML=html;
+}
+
+document.getElementById("typing").addEventListener("input",function(){
+ if(selected===null)return;
+ if(!started){
+  started=true;
+  startTime=Date.now();
+  timer=setInterval(updateStats,1000);
+ }
+ updateTarget();
+ updateStats();
+
+ if(this.value.length>=lessons[selected].text.length){
+  finishPractice();
+ }
+});
+
+function updateStats(){
+ if(!started)return;
+ const elapsed=(Date.now()-startTime)/1000;
+ document.getElementById("time").textContent=Math.floor(elapsed);
+
+ const input=document.getElementById("typing").value;
+ const target=lessons[selected].text;
+ let correct=0;
+ let wrong=0;
+
+ for(let i=0;i<input.length;i++){
+  if(input[i]===target[i])correct++;
+  else wrong++;
+ }
+ errors=wrong;
+
+ const accuracy=input.length?
+ Math.round(correct/input.length*100):100;
+
+ const wpm=elapsed>0?
+ Math.round((correct/5)/(elapsed/60)):0;
+
+ document.getElementById("wpm").textContent=wpm;
+ document.getElementById("accuracy").textContent=accuracy+"%";
+}
+
+function finishPractice(){
+ if(selected===null)return;
+ clearInterval(timer);
+ updateStats();
+ const input=document.getElementById("typing").value;
+ const target=lessons[selected].text;
+
+ let correct=0;
+ for(let i=0;i<input.length;i++){
+  if(input[i]===target[i])correct++;
+ }
+
+ document.getElementById("result").innerHTML=
+ `<p><strong>Practice Completed!</strong></p>
+ <p>Correct Characters: ${correct}</p>
+ <p>Incorrect Characters: ${input.length-correct}</p>
+ <p>Keep practising to improve your speed!</p>`;
+
+ document.getElementById("typing").disabled=true;
+}
+
+function resetPractice(){
+ if(selected!==null)startLesson(selected);
+}
+
+const layouts={
+ QWERTY:["QWERTYUIOP","ASDFGHJKL;","ZXCVBNM,./"],
+ AZERTY:["AZERTYUIOP","QSDFGHJKLM","WXCVBN,;:"],
+ QWERTZ:["QWERTZUIOP","ASDFGHJKL;","YXCVBNM,./"]
+};
+
+function changeLayout(){
+ const layout=document.getElementById("layout").value;
+ const area=document.getElementById("keyboard");
+ area.innerHTML="";
+ layouts[layout].forEach(row=>{
+  const div=document.createElement("div");
+  div.className="keyrow";
+  [...row].forEach(key=>{
+   const k=document.createElement("div");
+   k.className="key";
+   k.textContent=key;
+   div.appendChild(k);
+  });
+  area.appendChild(div);
+ });
+ const last=document.createElement("div");
+ last.className="keyrow";
+ const space=document.createElement("div");
+ space.className="key space";
+ space.textContent="SPACE";
+ last.appendChild(space);
+ area.appendChild(last);
+}
+
+showLessons();
+changeLayout();
+
+</script>
+</body>
+</html>
