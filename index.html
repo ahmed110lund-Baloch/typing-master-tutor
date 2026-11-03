@@ -4,455 +4,239 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#10243a">
-<title>Typing Master - Keyboard Tutor</title>
-
+<title>Typing Tutor</title>
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;
- font-family:Arial,sans-serif;
- background:#f1f5f9;
- color:#172b43;
-}
-header{
- background:#10243a;
- color:white;
- padding:22px 15px;
- text-align:center;
-}
-header h1{margin:0;font-size:27px}
-header p{color:#cbd5e1;margin-bottom:0}
-.container{
- max-width:950px;
- margin:auto;
- padding:18px;
-}
-.card{
- background:white;
- padding:18px;
- border-radius:13px;
- margin-bottom:16px;
- box-shadow:0 2px 9px #0000000d;
-}
-h2{font-size:20px;margin-top:0}
-select,button,textarea{
- font:inherit;
-}
-select{
- width:100%;
- padding:12px;
- border:1px solid #cbd5e1;
- border-radius:8px;
- background:white;
-}
-.stats{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:10px;
- text-align:center;
-}
-.stat{
- background:#eaf2fa;
- padding:13px 5px;
- border-radius:9px;
-}
-.stat strong{
- display:block;
- font-size:23px;
- color:#087e8b;
-}
-.stat span{font-size:12px;color:#526477}
-.lessons{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:10px;
-}
-.lesson{
- border:1px solid #dbe3eb;
- padding:13px;
- border-radius:9px;
- background:white;
- cursor:pointer;
- text-align:left;
-}
-.lesson:hover{border-color:#087e8b}
-.lesson small{display:block;margin-top:6px;color:#64748b}
-.free{color:#16834a;font-weight:bold}
-.lock{color:#c27a13;font-weight:bold}
-button{
- border:0;
- border-radius:8px;
- padding:12px 18px;
- background:#087e8b;
- color:white;
- cursor:pointer;
- font-weight:bold;
-}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f6fc;color:#17233d}
+header{background:linear-gradient(120deg,#172d67,#3478df);color:white;padding:22px}
+header h1{margin:0;font-size:25px}
+header p{margin:7px 0 0;color:#dbe7ff}
+.app{max-width:1100px;margin:auto;padding:18px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:15px 0}
+.stat,.panel,.lesson{background:white;border-radius:15px;padding:17px;box-shadow:0 3px 14px #17233d10}
+.stat strong{display:block;font-size:25px;color:#2866ce;margin-top:6px}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:16px}
+.lessons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lesson{cursor:pointer;border:1px solid #e5eaf3;transition:.2s}
+.lesson:hover{transform:translateY(-2px);border-color:#4384e9}
+.lesson.active{border:2px solid #3478df;background:#f0f6ff}
+.lesson.locked{opacity:.7;background:#f5f6f8}
+.lesson h3{font-size:15px;margin:0 0 8px}
+.lesson small{color:#6d7890}
+.tag{font-size:11px;font-weight:bold;color:#16834c}
+.lock{color:#bd7b16;font-weight:bold}
+button,select{border:0;border-radius:9px;padding:11px 15px;font-weight:bold;cursor:pointer}
+button{background:#286bd4;color:white}
 button:disabled{opacity:.5}
-textarea{
- width:100%;
- height:105px;
- padding:14px;
- border:2px solid #cbd5e1;
- border-radius:9px;
- font-size:19px;
- resize:vertical;
- outline:none;
-}
-textarea:focus{border-color:#087e8b}
-.target{
- background:#f1f5f9;
- padding:15px;
- border-radius:9px;
- font-size:21px;
- line-height:1.8;
- word-break:break-word;
-}
-.correct{color:#16834a}
-.wrong{color:#dc2626;background:#fee2e2}
-.current{background:#fef3c7}
-.keyboard{
- display:grid;
- gap:5px;
- margin-top:15px;
-}
-.keyrow{
- display:flex;
- justify-content:center;
- gap:4px;
-}
-.key{
- background:#dce6ef;
- padding:10px 0;
- border-radius:5px;
- text-align:center;
- flex:1;
- max-width:52px;
- font-size:12px;
- box-shadow:0 2px 2px #94a3b8;
-}
-.key.active{background:#087e8b;color:white}
-.space{max-width:250px;flex:5}
+select{background:#edf2fb;color:#17233d}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.target{font-size:27px;line-height:1.7;letter-spacing:2px;background:#f2f6ff;padding:18px;border-radius:12px;margin:15px 0;overflow-wrap:anywhere}
+textarea{width:100%;min-height:110px;padding:14px;border:2px solid #dce5f3;border-radius:12px;font-size:19px;outline:none}
+textarea:focus{border-color:#3478df}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.secondary{background:#e8eef9;color:#25436f}
+.result{background:#eaf8f0;padding:13px;border-radius:10px;margin-top:12px;display:none}
+nav button{display:block;width:100%;text-align:left;margin:7px 0;background:#edf3fc;color:#27416c}
 .hidden{display:none}
-.notice{
- background:#fff7df;
- padding:12px;
- border-radius:8px;
- color:#76520a;
- font-size:13px;
-}
-footer{text-align:center;padding:20px;color:#64748b}
-@media(max-width:550px){
- .container{padding:10px}
- .lessons{grid-template-columns:1fr}
- .key{font-size:10px;padding:9px 0}
- header h1{font-size:23px}
-}
+footer{text-align:center;color:#8190a7;padding:25px}
+@media(max-width:720px){.layout{grid-template-columns:1fr}.lessons{grid-template-columns:1fr 1fr}}
+@media(max-width:420px){.lessons{grid-template-columns:1fr}.stats{gap:7px}.stat{padding:12px}.stat strong{font-size:20px}}
 </style>
 </head>
-
 <body>
-
 <header>
-<h1>⌨️ TYPING MASTER</h1>
-<p>Learn Typing Anywhere, Anytime</p>
+<h1>⌨️ TYPING TUTOR</h1>
+<p>Learn touch typing step by step</p>
 </header>
 
-<main class="container">
-
-<div class="card">
-<h2>Choose Your Keyboard</h2>
-<select id="layout" onchange="changeLayout()">
-<option value="QWERTY">English QWERTY</option>
-<option value="AZERTY">French AZERTY</option>
-<option value="QWERTZ">German QWERTZ</option>
+<div class="app">
+<div class="topbar">
+<h2>My Typing Course</h2>
+<select id="layout">
+<option value="QWERTY">QWERTY Keyboard</option>
+<option value="AZERTY">AZERTY Keyboard</option>
+<option value="QWERTZ">QWERTZ Keyboard</option>
 </select>
 </div>
 
-<div class="card">
-<h2>Your Typing Progress</h2>
 <div class="stats">
-<div class="stat">
-<strong id="wpm">0</strong>
-<span>WPM</span>
-</div>
-<div class="stat">
-<strong id="accuracy">100%</strong>
-<span>Accuracy</span>
-</div>
-<div class="stat">
-<strong id="time">0</strong>
-<span>Seconds</span>
-</div>
-</div>
+<div class="stat">Speed <strong id="wpm">0 WPM</strong></div>
+<div class="stat">Accuracy <strong id="accuracy">100%</strong></div>
+<div class="stat">Time <strong id="time">0 sec</strong></div>
 </div>
 
-<div class="card">
-<h2>Typing Lessons</h2>
-<div class="lessons" id="lessons"></div>
+<div class="layout">
+<aside class="panel">
+<h3>Course Lessons</h3>
+<nav>
+<button onclick="showSection('lessons')">📚 All Lessons</button>
+<button onclick="showSection('practice')">⌨️ Typing Practice</button>
+<button onclick="showSection('about')">ℹ️ About</button>
+</nav>
+<p><small>FREE: Lessons 1–4<br>PREMIUM: Lessons 5–17</small></p>
+</aside>
+
+<main>
+<section id="lessons" class="panel">
+<h2>Choose Your Lesson</h2>
+<div class="lessons" id="lessonList"></div>
+</section>
+
+<section id="practice" class="panel hidden">
+<div class="topbar">
+<div>
+<h2 id="practiceTitle">Typing Practice</h2>
+<small id="exerciseName">Key Drill</small>
 </div>
-
-<div class="card" id="practice">
-<h2 id="lessonTitle">Start Your Typing Practice</h2>
-
-<p>Type the following text using your physical keyboard:</p>
-
-<div class="target" id="target">
-Select a lesson to begin.
+<button class="secondary" onclick="showSection('lessons')">← Lessons</button>
 </div>
-
-<br>
-
-<textarea id="typing" placeholder="Click here and start typing..." disabled></textarea>
-
-<br><br>
-
-<button onclick="resetPractice()">Restart Lesson</button>
-
-<button onclick="finishPractice()">Finish Test</button>
-
-<div id="result"></div>
-
-<div class="notice" style="margin-top:15px">
-Tip: For real computer typing practice, connect a USB keyboard to your mobile using an OTG adapter. You can also use your laptop or desktop keyboard.
+<div class="target" id="target">asdf jkl;</div>
+<textarea id="typingInput" placeholder="Type the text shown above..." spellcheck="false"></textarea>
+<div class="actions">
+<button onclick="startPractice()">New Practice</button>
+<button class="secondary" onclick="resetPractice()">Reset</button>
 </div>
-</div>
+<div class="result" id="result"></div>
+</section>
 
-<div class="card">
-<h2>Virtual Keyboard</h2>
-<p>Use this keyboard picture to learn key positions.</p>
-<div class="keyboard" id="keyboard"></div>
-</div>
-
-<div class="card">
-<h2>Premium Lessons 🔒</h2>
-<p>Unlock advanced typing lessons, complete keyboard training, number practice, symbols and professional speed tests.</p>
-<button onclick="alert('Premium courses and secure payment will be added in a future version.')">
-Explore Premium
-</button>
-</div>
-
+<section id="about" class="panel hidden">
+<h2>About Typing Tutor</h2>
+<p>Learn keyboard typing with guided lessons, practice drills and typing speed tests.</p>
+<p>Lessons 1–4 are free. Lessons 5–17 are Premium.</p>
+</section>
 </main>
+</div>
+</div>
 
-<footer>
-Typing Master - Learn, Practice and Improve
-</footer>
+<footer>Typing Tutor • Learn, Practice, Improve</footer>
 
 <script>
-
-const lessons = [
-{
-name:"Home Row",
-level:"FREE",
-text:"asdf jkl; asdf jkl; fdsa ;lkj"
-},
-{
-name:"Home Row Words",
-level:"FREE",
-text:"sad dad ask fall salad flask"
-},
-{
-name:"Upper Row - E I R U",
-level:"FREE",
-text:"er iu re ui erie ruler"
-},
-{
-name:"Upper Row - Advanced",
-level:"PREMIUM",
-text:"qwerty uiop power quiet write"
-},
-{
-name:"Bottom Row - C M",
-level:"FREE",
-text:"cm mc cmc mcm come calm"
-},
-{
-name:"Bottom Row - Advanced",
-level:"PREMIUM",
-text:"zxcvbnm mix zoom move zinc"
-},
-{
-name:"Number Practice",
-level:"FREE",
-text:"1 2 5 12 25 51 125"
-},
-{
-name:"Advanced Numbers",
-level:"PREMIUM",
-text:"1234567890 0987654321"
-},
-{
-name:"Symbols Practice",
-level:"PREMIUM",
-text:"! @ # $ % ^ & * ( ) , . ?"
-},
-{
-name:"Paragraph Practice",
-level:"PREMIUM",
-text:"Practice every day to improve your typing speed and accuracy."
-}
+const lessons=[
+["1","Home Row","asdf jkl;"],
+["2","E and I","e i"],
+["3","R and U","r u"],
+["4","T and O","t o"],
+["5","Left Shift Key","Shift"],
+["6","Right Shift and Period","? ."],
+["7","C and Comma","c ,"],
+["8","G H and Apostrophe","g h '"],
+["9","V N and Question Mark","v n ?"],
+["10","W and M","w m"],
+["11","Q and P","q p"],
+["12","B and Y","b y"],
+["13","Z and X","z x"],
+["14","Number Row","1234567890"],
+["15","Symbols","! @ # $ % ^ & *"],
+["16","Special Keys","Space Enter Tab Backspace"],
+["17","Other Keyboard Keys","Caps Lock Ctrl Alt Delete Arrows"]
 ];
 
-let selected = null;
-let started = false;
-let startTime = 0;
-let timer = null;
-let errors = 0;
+const drills=[
+["Key Drill","asdf fdsa jkl; ;lkj"],
+["Word Drill","sad dad ask fall lass"],
+["Sentence Drill","dad asks a lad"],
+["Paragraph Drill","a sad lad asks dad"]
+];
 
-function showLessons(){
- const area=document.getElementById("lessons");
- area.innerHTML="";
- lessons.forEach((l,i)=>{
-  const b=document.createElement("button");
-  b.className="lesson";
-  b.innerHTML=`<strong>${l.name}</strong>
-  <small class="${l.level==="FREE"?"free":"lock"}">
-  ${l.level==="FREE"?"✓ FREE":"🔒 PREMIUM"}
-  </small>`;
-  b.onclick=()=>{
-   if(l.level==="PREMIUM"){
-    alert("This is a Premium lesson. Premium access will be added later.");
-    return;
-   }
-   startLesson(i);
-  };
-  area.appendChild(b);
- });
+let selected=0,started=0,timer=null,correct=0,total=0;
+const $=id=>document.getElementById(id);
+
+function showSection(name){
+["lessons","practice","about"].forEach(id=>$(id).classList.add("hidden"));
+$(name).classList.remove("hidden");
 }
 
-function startLesson(i){
- selected=i;
- started=false;
- clearInterval(timer);
- errors=0;
- document.getElementById("lessonTitle").textContent=lessons[i].name;
- document.getElementById("target").textContent=lessons[i].text;
- document.getElementById("typing").value="";
- document.getElementById("typing").disabled=false;
- document.getElementById("typing").focus();
- document.getElementById("result").textContent="";
- document.getElementById("wpm").textContent="0";
- document.getElementById("accuracy").textContent="100%";
- document.getElementById("time").textContent="0";
- updateTarget();
+function renderLessons(){
+$("lessonList").innerHTML="";
+lessons.forEach((l,i)=>{
+let free=i<4;
+let div=document.createElement("div");
+div.className="lesson "+(free?"":"locked");
+div.innerHTML=`<h3>Lesson ${l[0]}: ${l[1]}</h3>
+<small>${free?"FREE • Available":"🔒 PREMIUM • Locked"}</small>`;
+div.onclick=()=>openLesson(i);
+$("lessonList").appendChild(div);
+});
 }
 
-function updateTarget(){
- const input=document.getElementById("typing").value;
- const target=lessons[selected].text;
- let html="";
- for(let i=0;i<target.length;i++){
-  let cls="";
-  if(i<input.length){
-   cls=input[i]===target[i]?"correct":"wrong";
-  }else if(i===input.length){
-   cls="current";
-  }
-  html+=`<span class="${cls}">${target[i]===" "?"&nbsp;":target[i]}</span>`;
- }
- document.getElementById("target").innerHTML=html;
+function openLesson(i){
+if(i>=4){
+alert("🔒 This is a Premium Lesson. Unlock Premium to continue.");
+return;
+}
+selected=i;
+$("practiceTitle").textContent="Lesson "+lessons[i][0]+": "+lessons[i][1];
+$("exerciseName").textContent="Key Drill";
+showSection("practice");
+startPractice();
 }
 
-document.getElementById("typing").addEventListener("input",function(){
- if(selected===null)return;
- if(!started){
-  started=true;
-  startTime=Date.now();
-  timer=setInterval(updateStats,1000);
- }
- updateTarget();
- updateStats();
+function randomText(){
+let base=lessons[selected][2].toLowerCase();
+let words=base.split(" ");
+let result=[];
+for(let i=0;i<12;i++){
+result.push(words[Math.floor(Math.random()*words.length)]);
+}
+return result.join(" ");
+}
 
- if(this.value.length>=lessons[selected].text.length){
-  finishPractice();
- }
+function startPractice(){
+clearInterval(timer);
+$("typingInput").value="";
+$("result").style.display="none";
+$("target").textContent=randomText();
+$("wpm").textContent="0 WPM";
+$("accuracy").textContent="100%";
+$("time").textContent="0 sec";
+started=0;
+$("typingInput").focus();
+}
+
+function resetPractice(){startPractice()}
+
+$("typingInput").addEventListener("input",function(){
+let typed=this.value;
+let target=$("target").textContent;
+if(!started){
+started=Date.now();
+timer=setInterval(updateTime,1000);
+}
+let matches=0;
+for(let i=0;i<typed.length;i++){
+if(typed[i]===target[i])matches++;
+}
+total=typed.length;
+correct=matches;
+let accuracy=total?Math.round(correct/total*100):100;
+let seconds=Math.max(1,(Date.now()-started)/1000);
+let wpm=Math.round((total/5)/(seconds/60));
+$("wpm").textContent=wpm+" WPM";
+$("accuracy").textContent=accuracy+"%";
+if(typed===target){
+clearInterval(timer);
+let net=Math.round(wpm*accuracy/100);
+$("result").style.display="block";
+$("result").innerHTML=`<b>🎉 Practice Completed!</b><br>
+Gross Speed: ${wpm} WPM<br>
+Accuracy: ${accuracy}%<br>
+Net Speed: ${net} WPM<br>
+Time Used: ${Math.round(seconds)} seconds`;
+}
 });
 
-function updateStats(){
- if(!started)return;
- const elapsed=(Date.now()-startTime)/1000;
- document.getElementById("time").textContent=Math.floor(elapsed);
-
- const input=document.getElementById("typing").value;
- const target=lessons[selected].text;
- let correct=0;
- let wrong=0;
-
- for(let i=0;i<input.length;i++){
-  if(input[i]===target[i])correct++;
-  else wrong++;
- }
- errors=wrong;
-
- const accuracy=input.length?
- Math.round(correct/input.length*100):100;
-
- const wpm=elapsed>0?
- Math.round((correct/5)/(elapsed/60)):0;
-
- document.getElementById("wpm").textContent=wpm;
- document.getElementById("accuracy").textContent=accuracy+"%";
+function updateTime(){
+if(started){
+$("time").textContent=Math.floor((Date.now()-started)/1000)+" sec";
+}
 }
 
-function finishPractice(){
- if(selected===null)return;
- clearInterval(timer);
- updateStats();
- const input=document.getElementById("typing").value;
- const target=lessons[selected].text;
+$("layout").addEventListener("change",function(){
+alert("Keyboard layout selected: "+this.value);
+});
 
- let correct=0;
- for(let i=0;i<input.length;i++){
-  if(input[i]===target[i])correct++;
- }
-
- document.getElementById("result").innerHTML=
- `<p><strong>Practice Completed!</strong></p>
- <p>Correct Characters: ${correct}</p>
- <p>Incorrect Characters: ${input.length-correct}</p>
- <p>Keep practising to improve your speed!</p>`;
-
- document.getElementById("typing").disabled=true;
-}
-
-function resetPractice(){
- if(selected!==null)startLesson(selected);
-}
-
-const layouts={
- QWERTY:["QWERTYUIOP","ASDFGHJKL;","ZXCVBNM,./"],
- AZERTY:["AZERTYUIOP","QSDFGHJKLM","WXCVBN,;:"],
- QWERTZ:["QWERTZUIOP","ASDFGHJKL;","YXCVBNM,./"]
-};
-
-function changeLayout(){
- const layout=document.getElementById("layout").value;
- const area=document.getElementById("keyboard");
- area.innerHTML="";
- layouts[layout].forEach(row=>{
-  const div=document.createElement("div");
-  div.className="keyrow";
-  [...row].forEach(key=>{
-   const k=document.createElement("div");
-   k.className="key";
-   k.textContent=key;
-   div.appendChild(k);
-  });
-  area.appendChild(div);
- });
- const last=document.createElement("div");
- last.className="keyrow";
- const space=document.createElement("div");
- space.className="key space";
- space.textContent="SPACE";
- last.appendChild(space);
- area.appendChild(last);
-}
-
-showLessons();
-changeLayout();
-
+renderLessons();
+showSection("lessons");
 </script>
 </body>
 </html>
