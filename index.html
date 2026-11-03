@@ -23,14 +23,16 @@ header p{margin:7px 0 0;color:#dbe7ff}
 .lesson.locked{opacity:.7;background:#f5f6f8}
 .lesson h3{font-size:15px;margin:0 0 8px}
 .lesson small{color:#6d7890}
-.tag{font-size:11px;font-weight:bold;color:#16834c}
-.lock{color:#bd7b16;font-weight:bold}
 button,select{border:0;border-radius:9px;padding:11px 15px;font-weight:bold;cursor:pointer}
 button{background:#286bd4;color:white}
 button:disabled{opacity:.5}
 select{background:#edf2fb;color:#17233d}
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.target{font-size:27px;line-height:1.7;letter-spacing:2px;background:#f2f6ff;padding:18px;border-radius:12px;margin:15px 0;overflow-wrap:anywhere}
+.target{font-size:27px;line-height:1.9;letter-spacing:2px;background:#f2f6ff;padding:18px;border-radius:12px;margin:15px 0;overflow-wrap:anywhere;min-height:90px}
+.target span{border-radius:4px;padding:1px 2px}
+.target .correct{background:#16834c;color:white}
+.target .wrong{background:#d92d20;color:white}
+.target .current{border-bottom:3px solid #286bd4}
 textarea{width:100%;min-height:110px;padding:14px;border:2px solid #dce5f3;border-radius:12px;font-size:19px;outline:none}
 textarea:focus{border-color:#3478df}
 .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
@@ -39,8 +41,11 @@ textarea:focus{border-color:#3478df}
 nav button{display:block;width:100%;text-align:left;margin:7px 0;background:#edf3fc;color:#27416c}
 .hidden{display:none}
 footer{text-align:center;color:#8190a7;padding:25px}
+.progress{height:10px;background:#e5eaf3;border-radius:20px;overflow:hidden;margin:12px 0}
+.progress div{height:100%;width:0;background:#16834c;transition:width .2s}
+.stage{font-weight:bold;color:#2866ce;margin-top:10px}
 @media(max-width:720px){.layout{grid-template-columns:1fr}.lessons{grid-template-columns:1fr 1fr}}
-@media(max-width:420px){.lessons{grid-template-columns:1fr}.stats{gap:7px}.stat{padding:12px}.stat strong{font-size:20px}}
+@media(max-width:420px){.lessons{grid-template-columns:1fr}.stats{gap:7px}.stat{padding:12px}.stat strong{font-size:20px}.target{font-size:23px}}
 </style>
 </head>
 <body>
@@ -90,12 +95,19 @@ footer{text-align:center;color:#8190a7;padding:25px}
 </div>
 <button class="secondary" onclick="showSection('lessons')">← Lessons</button>
 </div>
-<div class="target" id="target">asdf jkl;</div>
-<textarea id="typingInput" placeholder="Type the text shown above..." spellcheck="false"></textarea>
+
+<div class="stage" id="stageName">2 Letters • Ascending</div>
+<div class="progress"><div id="progressBar"></div></div>
+<p id="promptCount">Practice 1 of 5</p>
+
+<div class="target" id="target"></div>
+
+<textarea id="typingInput" placeholder="Type the letters shown above..." spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+
 <div class="actions">
-<button onclick="startPractice()">New Practice</button>
-<button class="secondary" onclick="resetPractice()">Reset</button>
+<button onclick="startPractice()">Restart Drill</button>
 </div>
+
 <div class="result" id="result"></div>
 </section>
 
@@ -112,10 +124,10 @@ footer{text-align:center;color:#8190a7;padding:25px}
 
 <script>
 const lessons=[
-["1","Home Row","asdf jkl;"],
-["2","E and I","e i"],
-["3","R and U","r u"],
-["4","T and O","t o"],
+["1","Home Row","asdfjkl;"],
+["2","E and I","asdfjkl;ei"],
+["3","R and U","asdfjkl;eiru"],
+["4","T and O","asdfjkl;eirut o".replace(" ","")],
 ["5","Left Shift Key","Shift"],
 ["6","Right Shift and Period","? ."],
 ["7","C and Comma","c ,"],
@@ -126,19 +138,33 @@ const lessons=[
 ["12","B and Y","b y"],
 ["13","Z and X","z x"],
 ["14","Number Row","1234567890"],
-["15","Symbols","! @ # $ % ^ & *"],
+["15","Symbols","!@#$%^&*"],
 ["16","Special Keys","Space Enter Tab Backspace"],
 ["17","Other Keyboard Keys","Caps Lock Ctrl Alt Delete Arrows"]
 ];
 
-const drills=[
-["Key Drill","asdf fdsa jkl; ;lkj"],
-["Word Drill","sad dad ask fall lass"],
-["Sentence Drill","dad asks a lad"],
-["Paragraph Drill","a sad lad asks dad"]
+const stages=[
+{length:2,direction:"Ascending"},
+{length:3,direction:"Ascending"},
+{length:4,direction:"Ascending"},
+{length:4,direction:"Descending"},
+{length:3,direction:"Descending"},
+{length:2,direction:"Descending"}
 ];
 
-let selected=0,started=0,timer=null,correct=0,total=0;
+let selected=0;
+let stageIndex=0;
+let promptIndex=0;
+let prompts=[];
+let targetText="";
+let started=0;
+let timer=null;
+let total=0;
+let correct=0;
+let mistakes=0;
+let finished=false;
+let transitionTimer=null;
+
 const $=id=>document.getElementById(id);
 
 function showSection(name){
@@ -171,65 +197,179 @@ showSection("practice");
 startPractice();
 }
 
-function randomText(){
-let base=lessons[selected][2].toLowerCase();
-let words=base.split(" ");
-let result=[];
-for(let i=0;i<12;i++){
-result.push(words[Math.floor(Math.random()*words.length)]);
+function randomSequence(length,keys){
+let result="";
+for(let i=0;i<length;i++){
+result+=keys[Math.floor(Math.random()*keys.length)];
 }
-return result.join(" ");
+return result;
+}
+
+function createPrompts(){
+let keys=lessons[selected][2];
+let length=stages[stageIndex].length;
+prompts=[];
+
+for(let i=0;i<5;i++){
+prompts.push(randomSequence(length,keys));
+}
+
+if(stages[stageIndex].direction==="Descending"){
+prompts.reverse();
+}
+
+promptIndex=0;
+showCurrentPrompt();
+}
+
+function showCurrentPrompt(){
+targetText=prompts[promptIndex];
+$("target").innerHTML="";
+updateTarget();
+$("typingInput").value="";
+$("typingInput").disabled=false;
+$("typingInput").focus();
+
+$("stageName").textContent=
+stages[stageIndex].length+" Letters • "+stages[stageIndex].direction;
+
+$("promptCount").textContent=
+"Practice "+(promptIndex+1)+" of 5";
+
+$("progressBar").style.width=(promptIndex/5*100)+"%";
+}
+
+function updateTarget(){
+let typed=$("typingInput").value;
+let html="";
+
+for(let i=0;i<targetText.length;i++){
+let cls="";
+if(i<typed.length){
+cls=typed[i]===targetText[i]?"correct":"wrong";
+}else if(i===typed.length){
+cls="current";
+}
+let char=targetText[i]===";"?";":targetText[i];
+html+=`<span class="${cls}">${char}</span>`;
+}
+
+$("target").innerHTML=html;
 }
 
 function startPractice(){
 clearInterval(timer);
-$("typingInput").value="";
+clearTimeout(transitionTimer);
+
+stageIndex=0;
+promptIndex=0;
+total=0;
+correct=0;
+mistakes=0;
+finished=false;
+started=0;
+
 $("result").style.display="none";
-$("target").textContent=randomText();
 $("wpm").textContent="0 WPM";
 $("accuracy").textContent="100%";
 $("time").textContent="0 sec";
-started=0;
-$("typingInput").focus();
-}
 
-function resetPractice(){startPractice()}
-
-$("typingInput").addEventListener("input",function(){
-let typed=this.value;
-let target=$("target").textContent;
-if(!started){
-started=Date.now();
-timer=setInterval(updateTime,1000);
+createPrompts();
 }
-let matches=0;
-for(let i=0;i<typed.length;i++){
-if(typed[i]===target[i])matches++;
-}
-total=typed.length;
-correct=matches;
-let accuracy=total?Math.round(correct/total*100):100;
-let seconds=Math.max(1,(Date.now()-started)/1000);
-let wpm=Math.round((total/5)/(seconds/60));
-$("wpm").textContent=wpm+" WPM";
-$("accuracy").textContent=accuracy+"%";
-if(typed===target){
-clearInterval(timer);
-let net=Math.round(wpm*accuracy/100);
-$("result").style.display="block";
-$("result").innerHTML=`<b>🎉 Practice Completed!</b><br>
-Gross Speed: ${wpm} WPM<br>
-Accuracy: ${accuracy}%<br>
-Net Speed: ${net} WPM<br>
-Time Used: ${Math.round(seconds)} seconds`;
-}
-});
 
 function updateTime(){
 if(started){
 $("time").textContent=Math.floor((Date.now()-started)/1000)+" sec";
 }
 }
+
+function nextPrompt(){
+promptIndex++;
+
+if(promptIndex>=5){
+stageIndex++;
+
+if(stageIndex>=stages.length){
+completeDrill();
+return;
+}
+
+promptIndex=0;
+createPrompts();
+}else{
+showCurrentPrompt();
+}
+}
+
+function completeDrill(){
+clearInterval(timer);
+finished=true;
+$("typingInput").disabled=true;
+$("progressBar").style.width="100%";
+
+let seconds=Math.max(1,(Date.now()-started)/1000);
+let wpm=Math.round((correct/5)/(seconds/60));
+let accuracy=total?Math.round(correct/total*100):100;
+let net=Math.round(wpm*accuracy/100);
+
+$("result").style.display="block";
+$("result").innerHTML=
+`<b>🎉 Drill Completed!</b><br>
+Gross Speed: ${wpm} WPM<br>
+Accuracy: ${accuracy}%<br>
+Net Speed: ${net} WPM<br>
+Mistakes: ${mistakes}<br>
+Time Used: ${Math.round(seconds)} seconds<br><br>
+<strong>Excellent! You completed all six stages.</strong>`;
+}
+
+$("typingInput").addEventListener("input",function(){
+if(finished)return;
+
+let typed=this.value;
+
+if(!started){
+started=Date.now();
+timer=setInterval(updateTime,1000);
+}
+
+if(typed.length>targetText.length){
+this.value=typed.slice(0,targetText.length);
+typed=this.value;
+}
+
+total++;
+let matches=0;
+
+for(let i=0;i<typed.length;i++){
+if(typed[i]===targetText[i]){
+matches++;
+}
+}
+
+correct=correct+matches;
+mistakes=mistakes+(typed.length-matches);
+
+let accuracy=total?Math.round(correct/total*100):100;
+let seconds=Math.max(1,(Date.now()-started)/1000);
+let wpm=Math.round((correct/5)/(seconds/60));
+
+$("wpm").textContent=wpm+" WPM";
+$("accuracy").textContent=accuracy+"%";
+$("time").textContent=Math.floor(seconds)+" sec";
+
+updateTarget();
+
+if(typed.length===targetText.length){
+if(typed===targetText){
+this.disabled=true;
+$("progressBar").style.width=((promptIndex+1)/5*100)+"%";
+transitionTimer=setTimeout(nextPrompt,350);
+}else{
+$("promptCount").textContent="Incorrect! Check the red letters and try again.";
+}
+}
+});
 
 $("layout").addEventListener("change",function(){
 alert("Keyboard layout selected: "+this.value);
