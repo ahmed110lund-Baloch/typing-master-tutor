@@ -3,7 +3,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#101a2c">
 <title>Typing Tutor</title>
 <style>
 *{box-sizing:border-box}
@@ -11,71 +12,92 @@ body{margin:0;font-family:Arial,sans-serif;background:#f3f6fc;color:#17233d}
 header{background:linear-gradient(120deg,#172d67,#3478df);color:white;padding:20px}
 header h1{margin:0}
 .app{max-width:1100px;margin:auto;padding:18px}
-.panel,.lesson,.stat{background:white;border-radius:14px;padding:16px;box-shadow:0 3px 14px #17233d10}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.panel,.stat,.lesson{background:white;border-radius:14px;padding:16px;box-shadow:0 3px 14px #17233d10}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}
 .stat strong{display:block;font-size:23px;color:#2866ce;margin-top:6px}
-.layout{display:grid;grid-template-columns:260px 1fr;gap:15px}
-.lessons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.lesson{cursor:pointer;border:1px solid #e5eaf3}
+.layout{display:grid;grid-template-columns:250px 1fr;gap:15px}
+.lessons{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.lesson{border:1px solid #e5eaf3;cursor:pointer}
 .lesson.locked{opacity:.65}
 button,select{border:0;border-radius:9px;padding:11px 15px;font-weight:bold;cursor:pointer}
 button{background:#286bd4;color:white}
+button:disabled{opacity:.5;cursor:not-allowed}
 .secondary{background:#e8eef9;color:#25436f}
+.danger{background:#b42318;color:white}
 nav button{display:block;width:100%;text-align:left;margin:7px 0;background:#edf3fc;color:#27416c}
 .hidden{display:none!important}
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.progress{height:9px;background:#e5eaf3;border-radius:20px;overflow:hidden;margin:12px 0}
-.progress div{height:100%;width:0;background:#16834c;transition:width .2s}
-.target{display:flex;justify-content:center;align-items:center;gap:clamp(9px,2vw,22px);flex-wrap:wrap;min-height:115px;margin:18px 0}
-.keycap{width:clamp(48px,9vw,78px);height:clamp(55px,10vw,82px);display:grid;place-items:center;background:#e8f0fe;border:2px solid #9bb9eb;border-bottom:6px solid #789bd5;border-radius:12px;font-size:clamp(25px,5vw,38px);font-weight:bold;color:#174ea6;transition:.12s}
-.keycap.correct{background:#16834c;color:white;border-color:#16834c}
-.keycap.wrong{background:#d92d20;color:white;border-color:#d92d20}
-.keycap.current{outline:3px solid #3478df;outline-offset:3px}
-.tutor-screen{display:none}
-body.practice-mode{background:#101a2c;overflow:hidden}
-body.practice-mode header,body.practice-mode .app>.topbar,
-body.practice-mode .app>.stats,body.practice-mode .app>.layout>aside,
+footer{text-align:center;color:#8190a7;padding:20px}
+.progress{height:8px;background:#34445e;border-radius:20px;overflow:hidden;width:min(300px,90%);margin:10px auto}
+.progress div{height:100%;width:0;background:#22c55e;transition:width .2s}
+#practice{min-height:500px}
+body.practice-mode{background:#101a2c;color:white;overflow:hidden}
+body.practice-mode header,
+body.practice-mode .app>.topbar,
+body.practice-mode .app>.stats,
+body.practice-mode .app>.layout>aside,
 body.practice-mode footer{display:none!important}
-body.practice-mode .app{max-width:none;padding:0;height:100vh}
+body.practice-mode .app{padding:0;margin:0;max-width:none;width:100%;height:100dvh}
 body.practice-mode .layout{display:block;height:100%}
 body.practice-mode main{height:100%}
-body.practice-mode #practice{display:grid!important;grid-template-columns:95px 1fr;grid-template-rows:1fr 210px;gap:12px;height:100%;padding:12px;background:#101a2c;color:white;border-radius:0;box-shadow:none}
-body.practice-mode #practice .practice-heading,
-body.practice-mode #practice .practice-extra{display:none!important}
-.towers{grid-column:1;grid-row:1;display:flex;flex-direction:column;justify-content:center;gap:8px}
-.tower{height:32px;border:1px solid #64748b;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#dbeafe;font-size:13px;font-weight:bold;background:#25344d}
-.tower.done{background:#16834c;border-color:#35c77c;color:white}
-.practice-center{grid-column:2;grid-row:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0}
-.practice-center h2{margin:5px}
-#stageName{color:#b9c9e6}
-#promptCount{color:#aabbd8}
-body.practice-mode .target{width:100%;margin:12px 0}
-.keyboard-area{grid-column:1/3;grid-row:2;display:flex;flex-direction:column;justify-content:center;gap:7px;overflow:hidden}
-.hand-guide{display:flex;justify-content:center;gap:45px;align-items:center;height:45px}
-.hand{font-size:29px;opacity:.55;transition:.15s}
-.hand.active{opacity:1;filter:drop-shadow(0 0 7px #4ade80);transform:scale(1.2)}
-.keyboard{display:flex;flex-direction:column;gap:5px;align-items:center}
-.key-row{display:flex;justify-content:center;gap:4px;width:100%}
-.vkey{height:32px;min-width:clamp(20px,5vw,43px);padding:0 4px;border-radius:5px;background:#dce4ef;color:#17233d;display:grid;place-items:center;font-size:clamp(9px,1.5vw,13px);font-weight:bold;border-bottom:3px solid #9aa9bd;transition:.08s}
-.vkey.wide{min-width:clamp(40px,8vw,70px)}
-.vkey.space{min-width:35%}
+body.practice-mode #practice{
+ display:grid!important;
+ grid-template-columns:76px 1fr;
+ grid-template-rows:minmax(0,1fr) 190px;
+ gap:8px;height:100%;padding:10px;
+ border-radius:0;background:#101a2c;color:white;box-shadow:none
+}
+.practice-heading{display:none}
+.towers{grid-column:1;grid-row:1;display:flex;flex-direction:column;justify-content:center;gap:7px}
+.tower{height:29px;border:1px solid #52627b;border-radius:6px;display:flex;align-items:center;justify-content:center;background:#26364f;color:white;font-size:12px;font-weight:bold}
+.tower.done{background:#16834c;border-color:#38c77b}
+.center{grid-column:2;grid-row:1;display:flex;flex-direction:column;justify-content:center;align-items:center;min-width:0;text-align:center;position:relative}
+#timer{font-size:clamp(24px,4vw,36px);font-weight:bold;color:#fbbf24}
+#stageName{display:none}
+#promptCount{font-size:12px;color:#b6c6df;margin:3px}
+.target{display:flex;align-items:center;justify-content:center;gap:clamp(9px,2vw,22px);flex-wrap:wrap;width:100%;min-height:90px;margin:12px 0}
+.keycap{width:clamp(48px,8vw,76px);height:clamp(55px,10vw,78px);display:grid;place-items:center;background:#e8f0fe;border:2px solid #9bb9eb;border-bottom:6px solid #789bd5;border-radius:12px;font-size:clamp(25px,5vw,38px);font-weight:bold;color:#174ea6;transition:.12s}
+.keycap.current{outline:3px solid #60a5fa;outline-offset:3px}
+.keycap.correct{background:#16834c;color:white;border-color:#16834c}
+.keycap.wrong{background:#d92d20;color:white;border-color:#d92d20}
+.controls{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:8px}
+.controls button{padding:9px 12px;font-size:12px}
+.keyboard-area{grid-column:1/3;grid-row:2;display:flex;flex-direction:column;justify-content:center;gap:4px;overflow:hidden}
+.hand-guide{height:76px;display:flex;justify-content:center;align-items:end;gap:35px}
+.hand-svg{width:min(43%,180px);height:72px;overflow:visible}
+.finger{fill:#eab88e;stroke:#8e5c42;stroke-width:1.5;transform-box:fill-box;transform-origin:bottom center;transition:transform .13s ease}
+.palm{fill:#eab88e;stroke:#8e5c42;stroke-width:1.5}
+.finger.active{transform:translateY(12px);fill:#facc15;filter:drop-shadow(0 0 5px #facc15)}
+.finger.other{opacity:.8}
+.keyboard{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%}
+.key-row{display:flex;justify-content:center;gap:3px;width:100%}
+.vkey{height:clamp(23px,4vh,35px);min-width:clamp(17px,4.5vw,42px);padding:0 3px;border-radius:5px;background:#dce4ef;color:#17233d;display:grid;place-items:center;font-size:clamp(8px,1.3vw,12px);font-weight:bold;border-bottom:3px solid #9aa9bd;transition:transform .08s,background .08s}
+.vkey.wide{min-width:clamp(34px,7vw,60px)}
+.vkey.space{min-width:32%}
 .vkey.pressed{transform:translateY(3px);border-bottom-width:0}
 .vkey.good{background:#16834c;color:white;border-color:#0d6639}
 .vkey.bad{background:#d92d20;color:white;border-color:#a51e16}
-.exit-btn{position:fixed;right:12px;top:10px;z-index:5;background:#344765;color:white;padding:8px 12px}
-#typingInput{position:fixed;opacity:0;width:1px;height:1px;left:-100px;top:-100px}
-.result{background:#eaf8f0;color:#17233d;padding:15px;border-radius:10px;margin-top:10px}
-@media(max-width:600px){
-body.practice-mode #practice{grid-template-columns:53px 1fr;grid-template-rows:1fr 175px;padding:7px;gap:6px}
-.tower{height:27px;font-size:11px}
-.hand-guide{height:34px;gap:25px}
-.hand{font-size:23px}
-.vkey{height:27px;min-width:clamp(17px,6vw,31px);gap:2px}
-.key-row{gap:2px}
+#typingInput{position:fixed;left:-1000px;top:0;width:1px;height:1px;opacity:0}
+#result{position:absolute;z-index:4;background:#fff;color:#17233d;padding:18px;border-radius:14px;max-width:90%;box-shadow:0 5px 25px #0005}
+#rotateHint{display:none}
+body.practice-mode #rotateHint{display:none}
+@media(max-width:650px){
+ body.practice-mode #practice{grid-template-columns:48px 1fr;grid-template-rows:minmax(0,1fr) 160px;padding:6px;gap:5px}
+ .tower{height:24px;font-size:10px}
+ .hand-guide{height:58px;gap:15px}
+ .hand-svg{height:55px}
+ .vkey{height:25px;min-width:clamp(15px,5.3vw,29px);gap:2px}
+ .key-row{gap:2px}
+ .controls button{padding:7px 9px}
+}
+@media(orientation:portrait) and (max-width:800px){
+ body.practice-mode #rotateHint{display:block;position:fixed;z-index:10;inset:0;background:#101a2c;color:white;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px}
 }
 @media(min-width:900px){
-body.practice-mode #practice{grid-template-rows:1fr 245px}
-.vkey{height:39px}
+ body.practice-mode #practice{grid-template-rows:minmax(0,1fr) 215px}
+ .hand-guide{height:85px}
+ .hand-svg{height:80px}
+ .vkey{height:36px}
 }
 </style>
 </head>
@@ -89,9 +111,9 @@ body.practice-mode #practice{grid-template-rows:1fr 245px}
 <div class="topbar">
 <h2>My Typing Course</h2>
 <select id="layout">
-<option>QWERTY</option>
-<option>AZERTY</option>
-<option>QWERTZ</option>
+<option value="QWERTY">QWERTY Keyboard</option>
+<option value="AZERTY">AZERTY Keyboard</option>
+<option value="QWERTZ">QWERTZ Keyboard</option>
 </select>
 </div>
 
@@ -119,50 +141,68 @@ body.practice-mode #practice{grid-template-rows:1fr 245px}
 </section>
 
 <section id="practice" class="panel hidden">
-<button class="exit-btn" onclick="exitPractice()">✕ Exit</button>
-
 <div class="practice-heading">
-<div class="topbar">
 <h2 id="practiceTitle">Typing Practice</h2>
-<button class="secondary" onclick="exitPractice()">← Lessons</button>
-</div>
 </div>
 
 <div class="towers" id="towers"></div>
 
-<div class="practice-center">
-<h2 id="exerciseName">Key Drill</h2>
-<div id="stageName">2 Letters</div>
+<div class="center">
+<div id="timer">05:00</div>
+<div id="stageName"></div>
+<p id="promptCount">Ready</p>
 <div class="progress"><div id="progressBar"></div></div>
-<p id="promptCount">Practice 1</p>
 <div class="target" id="target"></div>
-<div id="result" class="result hidden"></div>
+<div class="controls">
+<button id="pauseBtn" onclick="togglePause()">Pause</button>
+<button class="secondary" onclick="startPractice()">Restart</button>
+<button class="danger" onclick="exitPractice()">Exit</button>
+</div>
+<div id="result" class="hidden"></div>
 </div>
 
 <div class="keyboard-area">
 <div class="hand-guide">
-<span id="leftHand" class="hand">✋</span>
-<span id="rightHand" class="hand">✋</span>
+<svg class="hand-svg" viewBox="0 0 180 90" aria-label="Left hand">
+<rect class="palm" x="43" y="48" width="91" height="35" rx="17"/>
+<rect class="finger" data-finger="lp" x="12" y="32" width="19" height="47" rx="9"/>
+<rect class="finger" data-finger="lr" x="35" y="10" width="19" height="53" rx="9"/>
+<rect class="finger" data-finger="lm" x="61" y="1" width="19" height="60" rx="9"/>
+<rect class="finger" data-finger="li" x="87" y="8" width="19" height="54" rx="9"/>
+<rect class="finger" data-finger="lt" x="119" y="40" width="19" height="39" rx="9" transform="rotate(-35 119 40)"/>
+</svg>
+<svg class="hand-svg" viewBox="0 0 180 90" aria-label="Right hand">
+<rect class="palm" x="43" y="48" width="91" height="35" rx="17"/>
+<rect class="finger" data-finger="rt" x="35" y="40" width="19" height="39" rx="9" transform="rotate(35 35 40)"/>
+<rect class="finger" data-finger="ri" x="74" y="8" width="19" height="54" rx="9"/>
+<rect class="finger" data-finger="rm" x="100" y="1" width="19" height="60" rx="9"/>
+<rect class="finger" data-finger="rr" x="126" y="10" width="19" height="53" rx="9"/>
+<rect class="finger" data-finger="rp" x="150" y="32" width="19" height="47" rx="9"/>
+</svg>
 </div>
 <div class="keyboard" id="keyboard"></div>
-</div>
-
-<input id="typingInput" autocomplete="off" autocapitalize="off" spellcheck="false">
-<div class="practice-extra">
-<button onclick="startPractice()">Restart Drill</button>
 </div>
 </section>
 
 <section id="about" class="panel hidden">
 <h2>About Typing Tutor</h2>
-<p>Learn keyboard typing with guided lessons, practice drills and typing speed tests.</p>
+<p>Learn keyboard typing with guided lessons and practice drills.</p>
 <p>Lessons 1–4 are free. Lessons 5–17 are Premium.</p>
 </section>
 </main>
 </div>
 </div>
 
+<div id="rotateHint">
+<div>
+<h2>↻ Rotate Your Phone</h2>
+<p>Please turn your phone sideways to begin typing practice.</p>
+<button onclick="dismissRotateHint()">Continue</button>
+</div>
+</div>
+
 <footer>Typing Tutor • Learn, Practice, Improve</footer>
+<input id="typingInput" autocomplete="off" autocapitalize="off" spellcheck="false">
 
 <script>
 const lessons=[
@@ -189,276 +229,334 @@ const stages=[2,3,4,4,3,2];
 const $=id=>document.getElementById(id);
 
 let selected=0,stageIndex=0,promptIndex=0;
-let prompts=[],targetText="",started=0,timer=null;
-let attempts=0,correct=0,mistakes=0,finished=false;
-let towerDone=0,stagePrompts=5;
-let lastKey="",keyTimer=null;
-let currentWpm=0,currentAccuracy=100;
+let prompts=[],targetText="";
+let startedAt=0,remaining=300,clock=null;
+let attempts=0,correct=0,mistakes=0;
+let towerDone=0,paused=false,finished=false;
+let promptAttempts=0,promptCorrect=0;
+let keyAnimationTimer=null;
 
 function showSection(name){
-document.body.classList.remove("practice-mode");
-["lessons","practice","about"].forEach(x=>$(x).classList.add("hidden"));
-$(name).classList.remove("hidden");
+ stopClock();
+ document.body.classList.remove("practice-mode");
+ ["lessons","practice","about"].forEach(id=>$(id).classList.add("hidden"));
+ $(name).classList.remove("hidden");
 }
 
 function renderLessons(){
-$("lessonList").innerHTML="";
-lessons.forEach((l,i)=>{
-let d=document.createElement("div");
-d.className="lesson";
-d.innerHTML=`<h3>Lesson ${l[0]}: ${l[1]}</h3>
-<small>${i<4?"FREE • Available":"🔒 PREMIUM • Locked"}</small>`;
-d.onclick=()=>openLesson(i);
-$("lessonList").appendChild(d);
-});
+ $("lessonList").innerHTML="";
+ lessons.forEach((l,i)=>{
+  const d=document.createElement("div");
+  d.className="lesson";
+  d.innerHTML=`<h3>Lesson ${l[0]}: ${l[1]}</h3><small>${i<4?"FREE • Available":"🔒 PREMIUM • Locked"}</small>`;
+  d.onclick=()=>openLesson(i);
+  $("lessonList").appendChild(d);
+ });
 }
 
 function openLesson(i){
-if(i>=4){alert("This is a Premium Lesson.");return;}
-selected=i;
-$("practiceTitle").textContent="Lesson "+lessons[i][0]+": "+lessons[i][1];
-$("exerciseName").textContent="Key Drill";
-document.body.classList.add("practice-mode");
-showPracticeOnly();
-startPractice();
-}
-
-function showPracticeOnly(){
-["lessons","about"].forEach(x=>$(x).classList.add("hidden"));
-$("practice").classList.remove("hidden");
+ if(i>=4){alert("This is a Premium Lesson. Unlock Premium to continue.");return;}
+ selected=i;
+ $("practiceTitle").textContent="Lesson "+lessons[i][0]+": "+lessons[i][1];
+ document.body.classList.add("practice-mode");
+ $("lessons").classList.add("hidden");
+ $("about").classList.add("hidden");
+ $("practice").classList.remove("hidden");
+ startPractice();
 }
 
 function randomSequence(length,keys){
-let result="";
-for(let i=0;i<length;i++){
-result+=keys[Math.floor(Math.random()*keys.length)];
-}
-return result;
+ let out="";
+ for(let i=0;i<length;i++)out+=keys[Math.floor(Math.random()*keys.length)];
+ return out;
 }
 
 function makePrompts(){
-let keys=lessons[selected][2];
-let length=stages[stageIndex];
-prompts=[];
-for(let i=0;i<stagePrompts;i++){
-let p=randomSequence(length,keys);
-if(p===prompts[prompts.length-1] && keys.length>1){
-p=randomSequence(length,keys);
-}
-prompts.push(p);
-}
-promptIndex=0;
-showPrompt();
+ const keys=lessons[selected][2];
+ const len=stages[stageIndex];
+ prompts=[];
+ for(let i=0;i<5;i++){
+  let p=randomSequence(len,keys);
+  while(p===prompts[prompts.length-1] && keys.length>1)p=randomSequence(len,keys);
+  prompts.push(p);
+ }
+ promptIndex=0;
+ showPrompt();
 }
 
 function showPrompt(){
-targetText=prompts[promptIndex];
-$("typingInput").value="";
-$("typingInput").disabled=false;
-$("target").innerHTML="";
-for(let i=0;i<targetText.length;i++){
-let s=document.createElement("span");
-s.className="keycap";
-s.textContent=targetText[i].toUpperCase();
-s.id="target"+i;
-$("target").appendChild(s);
-}
-$("stageName").textContent=stages[stageIndex]+" Letters";
-$("promptCount").textContent="Practice "+(promptIndex+1)+" of "+stagePrompts;
-$("progressBar").style.width=(towerDone*10)+"%";
-updateTarget();
-$("typingInput").focus();
+ targetText=prompts[promptIndex];
+ $("typingInput").value="";
+ $("typingInput").disabled=false;
+ $("target").innerHTML="";
+ for(let i=0;i<targetText.length;i++){
+  const s=document.createElement("span");
+  s.className="keycap";
+  s.id="target"+i;
+  s.textContent=targetText[i].toUpperCase();
+  $("target").appendChild(s);
+ }
+ promptAttempts=0;
+ promptCorrect=0;
+ $("promptCount").textContent="Practice "+(promptIndex+1);
+ updateTarget();
+ focusInput();
 }
 
 function updateTarget(){
-let typed=$("typingInput").value;
-for(let i=0;i<targetText.length;i++){
-let el=$("target"+i);
-if(!el)continue;
-el.className="keycap";
-if(i<typed.length)el.classList.add(typed[i]===targetText[i]?"correct":"wrong");
-else if(i===typed.length)el.classList.add("current");
-}
+ const typed=$("typingInput").value;
+ for(let i=0;i<targetText.length;i++){
+  const el=$("target"+i);
+  if(!el)continue;
+  el.className="keycap";
+  if(i<typed.length)el.classList.add(typed[i]===targetText[i]?"correct":"wrong");
+  else if(i===typed.length)el.classList.add("current");
+ }
 }
 
 function renderTowers(){
-$("towers").innerHTML="";
-for(let i=1;i<=10;i++){
-let d=document.createElement("div");
-d.className="tower"+(i<=towerDone?" done":"");
-d.textContent=i;
-$("towers").appendChild(d);
-}
+ $("towers").innerHTML="";
+ for(let i=1;i<=10;i++){
+  const d=document.createElement("div");
+  d.className="tower"+(i<=towerDone?" done":"");
+  d.textContent=i;
+  $("towers").appendChild(d);
+ }
 }
 
 function startPractice(){
-clearInterval(timer);
-clearTimeout(keyTimer);
-stageIndex=0;promptIndex=0;attempts=0;correct=0;mistakes=0;
-towerDone=0;started=0;finished=false;
-currentWpm=0;currentAccuracy=100;
-$("wpm").textContent="0 WPM";
-$("accuracy").textContent="100%";
-$("time").textContent="0 sec";
-$("result").classList.add("hidden");
-renderTowers();
-makePrompts();
-showPracticeOnly();
+ stopClock();
+ remaining=300;
+ attempts=0;correct=0;mistakes=0;
+ towerDone=0;stageIndex=0;promptIndex=0;
+ paused=false;finished=false;startedAt=0;
+ $("pauseBtn").textContent="Pause";
+ $("result").classList.add("hidden");
+ $("timer").textContent="05:00";
+ $("wpm").textContent="0 WPM";
+ $("accuracy").textContent="100%";
+ $("time").textContent="0 sec";
+ renderTowers();
+ makePrompts();
+ startClock();
+ requestLandscape();
+ focusInput();
+}
+
+function startClock(){
+ if(clock)clearInterval(clock);
+ clock=setInterval(()=>{
+  if(paused||finished)return;
+  if(remaining>0)remaining--;
+  $("timer").textContent=formatTime(remaining);
+  updateStats();
+  if(remaining<=0)completeDrill("Time is up!");
+ },1000);
+}
+
+function stopClock(){
+ if(clock){clearInterval(clock);clock=null;}
+}
+
+function formatTime(s){
+ return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
 }
 
 function updateStats(){
-if(!started)return;
-let seconds=Math.max(1,(Date.now()-started)/1000);
-currentWpm=Math.round((correct/5)/(seconds/60));
-currentAccuracy=attempts?Math.round(correct/attempts*100):100;
-$("wpm").textContent=currentWpm+" WPM";
-$("accuracy").textContent=currentAccuracy+"%";
-$("time").textContent=Math.floor(seconds)+" sec";
+ const elapsed=300-remaining;
+ const minutes=Math.max(elapsed/60,1/60);
+ const gross=Math.round((correct/5)/minutes);
+ const acc=attempts?Math.round(correct/attempts*100):100;
+ $("wpm").textContent=gross+" WPM";
+ $("accuracy").textContent=acc+"%";
+ $("time").textContent=elapsed+" sec";
+}
+
+function togglePause(){
+ if(finished)return;
+ paused=!paused;
+ $("pauseBtn").textContent=paused?"Resume":"Pause";
+ if(paused){
+  $("typingInput").blur();
+  $("promptCount").textContent="Paused";
+ }else{
+  $("promptCount").textContent="Practice "+(promptIndex+1);
+  focusInput();
+ }
 }
 
 function nextPrompt(){
-promptIndex++;
-if(promptIndex>=stagePrompts){
-stageIndex++;
-if(stageIndex>=stages.length){completeDrill();return;}
-makePrompts();
-}else showPrompt();
+ if(finished||paused)return;
+ promptIndex++;
+ if(promptIndex>=5){
+  stageIndex=(stageIndex+1)%stages.length;
+  makePrompts();
+ }else showPrompt();
+ focusInput();
 }
 
-function markTower(){
-if(currentAccuracy>=90 && currentWpm>=5){
-towerDone=Math.min(10,towerDone+1);
-renderTowers();
-$("progressBar").style.width=(towerDone*10)+"%";
-}
-if(towerDone>=10){completeDrill();return true;}
-return false;
-}
-
-function completeDrill(){
-clearInterval(timer);
-finished=true;
-$("typingInput").disabled=true;
-$("result").classList.remove("hidden");
-let sec=Math.max(1,(Date.now()-started)/1000);
-let gross=Math.round((correct/5)/(sec/60));
-let acc=attempts?Math.round(correct/attempts*100):100;
-let net=Math.round(gross*acc/100);
-$("result").innerHTML=`<b>🎉 Drill Completed!</b><br>
-Speed: ${gross} WPM<br>Accuracy: ${acc}%<br>
-Net Speed: ${net} WPM<br>Mistakes: ${mistakes}<br>
-Time: ${Math.round(sec)} seconds`;
+function scoreTower(){
+ const acc=promptAttempts?promptCorrect/promptAttempts*100:0;
+ const elapsed=300-remaining;
+ const wpm=elapsed>0?(correct/5)/(elapsed/60):0;
+ if(acc>=90 && wpm>=5){
+  towerDone++;
+  renderTowers();
+  $("progressBar").style.width=(towerDone*10)+"%";
+ }
+ if(towerDone>=10){
+  completeDrill("All 10 towers completed!");
+  return true;
+ }
+ return false;
 }
 
-function fingerFor(key){
-let k=key.toLowerCase();
-let left=["a","q","z","1","2"];
-let leftRing=["s","w","x","3"];
-let leftMiddle=["d","e","c","4"];
-let leftIndex=["f","r","t","g","v","b","5","6"];
-let rightIndex=["j","u","y","h","n","m","7"];
-let rightMiddle=["k","i",",","8"];
-let rightRing=["l","o",".","9"];
-if(left.includes(k))return "left";
-if(leftRing.includes(k)||leftMiddle.includes(k)||leftIndex.includes(k))return "left";
-if(rightIndex.includes(k)||rightMiddle.includes(k)||rightRing.includes(k)||[";","p","/","0"].includes(k))return "right";
-return "right";
+function completeDrill(message){
+ if(finished)return;
+ finished=true;
+ stopClock();
+ $("typingInput").disabled=true;
+ const elapsed=300-remaining;
+ const gross=Math.round((correct/5)/(Math.max(elapsed,1)/60));
+ const acc=attempts?Math.round(correct/attempts*100):100;
+ const net=Math.round(gross*acc/100);
+ $("result").classList.remove("hidden");
+ $("result").innerHTML=`<h3>🎉 ${message}</h3>
+ <p>Gross Speed: ${gross} WPM</p>
+ <p>Accuracy: ${acc}%</p>
+ <p>Net Speed: ${net} WPM</p>
+ <p>Mistakes: ${mistakes}</p>
+ <p>Time Used: ${elapsed} seconds</p>
+ <p>Time Saved: ${remaining} seconds</p>
+ <button onclick="startPractice()">Practice Again</button>
+ <button class="secondary" onclick="exitPractice()">Exit</button>`;
+ $("promptCount").textContent="Exercise completed";
 }
 
-function fingerHighlight(key){
-let hand=fingerFor(key);
-$("leftHand").classList.toggle("active",hand==="left");
-$("rightHand").classList.toggle("active",hand==="right");
+function fingerInfo(key){
+ const k=key.toLowerCase();
+ const map={
+ a:["lp","left"],q:["lp","left"],z:["lp","left"],"1":["lp","left"],
+ s:["lr","left"],w:["lr","left"],x:["lr","left"],"2":["lr","left"],
+ d:["lm","left"],e:["lm","left"],c:["lm","left"],"3":["lm","left"],
+ f:["li","left"],r:["li","left"],t:["li","left"],g:["li","left"],v:["li","left"],b:["li","left"],"4":["li","left"],"5":["li","left"],
+ j:["ri","right"],u:["ri","right"],y:["ri","right"],h:["ri","right"],n:["ri","right"],m:["ri","right"],"6":["ri","right"],"7":["ri","right"],
+ k:["rm","right"],i:["rm","right"],",":["rm","right"],"8":["rm","right"],
+ l:["rr","right"],o:["rr","right"],".":["rr","right"],"9":["rr","right"],
+ ";":["rp","right"],p:["rp","right"],"/":["rp","right"],"0":["rp","right"]
+ };
+ return map[k]||["rt","right"];
 }
 
-function buildKeyboard(){
-let rows=["1234567890-=","qwertyuiop[]","asdfghjkl;'","zxcvbnm,./"];
-$("keyboard").innerHTML="";
-rows.forEach(row=>{
-let r=document.createElement("div");r.className="key-row";
-[...row].forEach(ch=>{
-let k=document.createElement("div");
-k.className="vkey";k.id="vk-"+ch;
-k.textContent=ch.toUpperCase();
-r.appendChild(k);
-});
-$("keyboard").appendChild(r);
-});
-let bottom=document.createElement("div");bottom.className="key-row";
-["Shift","Ctrl","Alt","Space","Enter","Back"].forEach(x=>{
-let k=document.createElement("div");
-k.className="vkey wide"+(x==="Space"?" space":"");
-k.id="vk-"+x.toLowerCase();k.textContent=x;
-bottom.appendChild(k);
-});
-$("keyboard").appendChild(bottom);
+function animateFinger(key){
+ document.querySelectorAll(".finger").forEach(f=>f.classList.remove("active"));
+ const [finger]=fingerInfo(key);
+ const el=document.querySelector('[data-finger="'+finger+'"]');
+ if(el)el.classList.add("active");
+ clearTimeout(keyAnimationTimer);
+ keyAnimationTimer=setTimeout(()=>{
+  document.querySelectorAll(".finger").forEach(f=>f.classList.remove("active"));
+ },220);
+}
+
+function keyId(key){
+ if(key===" ")return "vk-space";
+ if(key==="Backspace")return "vk-backspace";
+ return "vk-"+key.toLowerCase();
 }
 
 function animateKey(key,good){
-let k=key.toLowerCase();
-let el=$("vk-"+k);
-if(el){
-el.classList.remove("pressed","good","bad");
-void el.offsetWidth;
-el.classList.add("pressed",good?"good":"bad");
-clearTimeout(keyTimer);
-keyTimer=setTimeout(()=>el.classList.remove("pressed","good","bad"),250);
-}
-fingerHighlight(key);
+ const el=$(keyId(key));
+ if(!el)return;
+ el.classList.remove("pressed","good","bad");
+ void el.offsetWidth;
+ el.classList.add("pressed",good?"good":"bad");
+ setTimeout(()=>el.classList.remove("pressed","good","bad"),230);
 }
 
-function handleKey(e){
-if(!document.body.classList.contains("practice-mode")||finished)return;
-if(e.ctrlKey||e.altKey||e.metaKey)return;
-if(e.key==="Tab"||e.key==="Escape"){return;}
-if(e.key==="Backspace"){e.preventDefault();return;}
-if(e.key.length!==1)return;
-e.preventDefault();
-let typed=$("typingInput").value;
-if(typed.length>=targetText.length)return;
-if(!started){started=Date.now();timer=setInterval(updateStats,1000);}
-let expected=targetText[typed.length];
-let actual=e.key.toLowerCase();
-let good=actual===expected.toLowerCase();
-attempts++;
-if(good)correct++;else mistakes++;
-animateKey(actual,good);
-$("typingInput").value=typed+actual;
-updateTarget();
-updateStats();
-if($("typingInput").value.length===targetText.length){
-if($("typingInput").value===targetText.toLowerCase()){
-$("typingInput").disabled=true;
-if(markTower())return;
-setTimeout(nextPrompt,280);
-}else{
-$("promptCount").textContent="Incorrect — try the next key carefully";
-setTimeout(()=>{
-if(!finished){$("typingInput").value="";updateTarget();$("typingInput").disabled=false;$("typingInput").focus();}
-},350);
-}
-}
+function buildKeyboard(){
+ const rows=["1234567890-=","qwertyuiop[]","asdfghjkl;'","zxcvbnm,./"];
+ $("keyboard").innerHTML="";
+ rows.forEach(row=>{
+  const r=document.createElement("div");
+  r.className="key-row";
+  [...row].forEach(ch=>{
+   const k=document.createElement("button");
+   k.type="button";k.className="vkey";
+   k.id=keyId(ch);k.textContent=ch.toUpperCase();
+   k.addEventListener("click",()=>virtualPress(ch));
+   r.appendChild(k);
+  });
+  $("keyboard").appendChild(r);
+ });
+ const bottom=document.createElement("div");
+ bottom.className="key-row";
+ [["Shift","shift"],["Ctrl","ctrl"],["Alt","alt"],["Space","space"],["Enter","enter"],["Back","backspace"]].forEach(([label,id])=>{
+  const k=document.createElement("button");
+  k.type="button";k.className="vkey wide"+(id==="space"?" space":"");
+  k.id="vk-"+id;k.textContent=label;
+  k.addEventListener("click",()=>{
+   if(id==="space")virtualPress(" ");
+   else if(id==="backspace")virtualBackspace();
+  });
+  bottom.appendChild(k);
+ });
+ $("keyboard").appendChild(bottom);
 }
 
-function exitPractice(){
-clearInterval(timer);
-document.body.classList.remove("practice-mode");
-showSection("lessons");
+function virtualPress(key){
+ if(finished||paused)return;
+ processKey(key);
+ focusInput();
 }
 
-$("layout").addEventListener("change",()=>{
-alert("Layout selection saved: "+$("layout").value+". Full physical key remapping will be added in a later update.");
-});
+function virtualBackspace(){
+ if(finished||paused)return;
+ const input=$("typingInput");
+ input.value=input.value.slice(0,-1);
+ updateTarget();
+ focusInput();
+}
 
-document.addEventListener("keydown",handleKey);
-$("practice").addEventListener("click",()=>{
-if(document.body.classList.contains("practice-mode"))$("typingInput").focus();
-});
+function processKey(actual){
+ if(finished||paused||$("typingInput").disabled)return;
+ if(!startedAt)startedAt=Date.now();
+ const typed=$("typingInput").value;
+ if(typed.length>=targetText.length)return;
+ const expected=targetText[typed.length];
+ const good=actual.toLowerCase()===expected.toLowerCase();
+ attempts++;promptAttempts++;
+ if(good){correct++;promptCorrect++}else mistakes++;
+ animateKey(actual,good);
+ animateFinger(actual);
+ $("typingInput").value=typed+actual.toLowerCase();
+ updateTarget();
+ updateStats();
 
-buildKeyboard();
-renderLessons();
-showSection("lessons");
-</script>
-</body>
-</html>
+ if($("typingInput").value.length===targetText.length){
+  if($("typingInput").value===targetText.toLowerCase()){
+   $("typingInput").disabled=true;
+   if(scoreTower())return;
+   setTimeout(()=>{if(!finished&&!paused)nextPrompt()},240);
+  }else{
+   $("promptCount").textContent="Incorrect — try again";
+   setTimeout(()=>{
+    if(finished||paused)return;
+    $("typingInput").value="";
+    updateTarget();
+    $("typingInput").disabled=false;
+    focusInput();
+   },350);
+  }
+ }
+}
 
+function handlePhysicalKey(e){
+ if(!document.body.classList.contains("practice-mode"))return;
+ if(finished||paused)return;
+ if(e.ctrlKey||e.altKey||e.metaKey)return;
+ if(e.key==="Escape"){exitPractice();return;}
+ if(e.key==="Backspace"){
+  e.preventDefault();virtualBackspace();return;
+ }
+ 
