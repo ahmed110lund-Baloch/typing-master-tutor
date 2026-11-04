@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Typing Master - Lesson 1</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8ecf5;font-family:Arial;color:#1a2a4a}
+.topbar{background:linear-gradient(90deg,#0b2d7a,#2a64d8);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer}
+.topbar h1{margin:0;font-size:22px;font-weight:900}
+.topbar h1 span{color:#ffde59}
+.wrap{max-width:900px;margin:14px auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px #0b2d7a22}
+.head{padding:16px;background:linear-gradient(180deg,#fff,#e6eeff)}
+.head h2{margin:0;color:#0b2d7a;font-size:24px}
+.homeBtn{background:#fff;border:1px solid #b8c9ee;padding:8px 14px;border-radius:20px;font-weight:800;cursor:pointer;color:#0b2d7a}
+.exList{padding:14px;display:flex;flex-direction:column;gap:10px}
+.ex{display:flex;gap:12px;align-items:center;background:linear-gradient(180deg,#fff,#eef3ff);border:1px solid #d6e2ff;border-radius:12px;padding:12px;cursor:pointer}
+.exNum{width:40px;height:40px;background:#0b2d7a;color:#fff;border-radius:50%;display:flex;justify-content:center;align-items:center;font-weight:900;flex-shrink:0}
+.lessonCard{display:flex;gap:12px;align-items:center;background:linear-gradient(180deg,#fff,#eef3ff);border:1px solid #d6e2ff;border-radius:12px;padding:12px;cursor:pointer;margin:8px 14px}
+.lessonCard.locked{opacity:.55;background:#f0f1f4}
+.prog{height:10px;background:#e6eaf5;border-radius:10px;overflow:hidden;margin:10px 14px}
+.prog i{display:block;height:100%;background:#1bb65d;width:0%}
+#drillScreen,#resultScreen,#gameScreen{position:fixed;inset:0;z-index:999;background:linear-gradient(180deg,#081b3f,#204ba6);display:none;flex-direction:column;padding:12px;color:#fff;overflow-y:auto}
+#drillScreen.show,#resultScreen.show,#gameScreen.show{display:flex}
+.keyBtn{width:52px;height:52px;background:linear-gradient(180deg,#fff,#c9d8f5);border-radius:12px;display:flex;justify-content:center;align-items:center;font-size:18px;font-weight:900;color:#0b2d7a}
+.keyBtn.correct{background:#1bb65d!important;color:#fff}
+.keyBtn.wrong{background:#e23b3b!important;color:#fff}
+.keyBtn.next{outline:3px solid #ffde59}
+.letters{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:900px;margin:0 auto}
+.kbWrap{max-width:840px;margin:14px auto 0;background:#07132f;border-radius:16px;padding:12px}
+.kbRow{display:flex;justify-content:center;gap:5px;margin:5px 0}
+.kbKey{min-width:36px;height:42px;background:linear-gradient(180deg,#eef3ff,#a8b8d8);border-radius:7px;display:flex;justify-content:center;align-items:center;font-size:13px;font-weight:800;color:#0b2d7a}
+.kbKey.nextKey{background:#ffde59!important;box-shadow:0 0 12px #ffde59}
+.tower{flex:1;height:16px;background:#ffffff22;border-radius:10px}
+.tower.green{background:#1bb65d}
+.btn{padding:10px 18px;border-radius:20px;border:0;font-weight:800;cursor:pointer}
+.btnG{background:#1bb65d;color:#fff}
+.btnY{background:#ffde59;color:#000}
+.card{background:#fff;color:#1a2a4a;border-radius:16px;padding:18px;max-width:520px;width:92%;margin:auto;text-align:center}
+.statGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.stat{background:#eef3ff;border-radius:12px;padding:12px}
+.stat b{font-size:22px;display:block;color:#0b2d7a}
+.tipsBox{background:#fff;color:#1a2a4a;border-radius:16px;padding:18px;max-width:640px;width:94%;margin:auto}
+.fingerRow{display:flex;justify-content:center;gap:6px;margin:12px 0;flex-wrap:wrap}
+.finger{width:58px;height:68px;border-radius:14px 14px 8px 8px;display:flex;flex-direction:column;justify-content:center;align-items:center;font-weight:900;color:#fff;font-size:12px;text-align:center}
+.finger small{font-size:10px;font-weight:700;opacity:.9}
+.tipKb{max-width:600px;margin:10px auto;background:#07132f;padding:12px;border-radius:14px}
+.tipKbRow{display:flex;justify-content:center;gap:4px;margin:4px 0}
+.tipKey{min-width:32px;height:38px;border-radius:6px;display:flex;justify-content:center;align-items:center;font-weight:800;font-size:12px}
+.gameArea{position:relative;width:92%;max-width:500px;height:340px;background:#07132f;border-radius:16px;margin:12px auto;overflow:hidden;border:2px solid #ffffff33}
+.fallWord{position:absolute;left:50%;transform:translateX(-50%);font-size:32px;font-weight:900;color:#ffde59;white-space:nowrap}
+.ground{position:absolute;bottom:0;left:0;right:0;height:8px;background:#e23b3b}
+.gameInput{width:90%;max-width:400px;padding:14px;border-radius:12px;border:0;font-size:20px;text-align:center;margin:12px auto;display:block}
+</style>
+</head>
+<body>
+<div class="topbar" id="logoTrigger">
+<div><h1>⌨️ Typing <span>Master</span></h1><small>Learn • Practice • Achieve</small></div>
+<div style="background:#ffffff22;padding:5px 12px;border-radius:20px;font-size:12px">🎓 Student</div>
+</div>
+<div class="wrap" id="homeScreen">
+<div class="head"><h2>Welcome to Typing Master</h2><p>Your Complete Typing Tutor - 17 Lessons</p></div>
+<div id="homeLessons"></div>
+<div style="padding:0 14px 16px"><div style="background:#fff9db;border:1px solid #ffe58f;border-radius:12px;padding:12px;font-size:13px"><b>💡 Tip:</b> Lesson 1 se shuru karein. Home Row seekhein.</div></div>
+</div>
+<div class="wrap" id="lessonScreen" style="display:none">
+<div class="head">
+<button class="homeBtn" onclick="goHome()">← 🏠 Home</button>
+<h2 style="margin-top:10px">Lesson 1: The Home Row</h2><p>Place your fingers on A S D F J K L ;</p>
+<div style="display:flex;justify-content:space-between;font-size:12px"><span id="progText">0 / 6 Completed</span><span>Lesson 1</span></div>
+</div>
+<div class="prog"><i id="progFill"></i></div>
+<div class="exList" id="exList"></div>
+</div>
+<div id="drillScreen">
+<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><h3 id="drillTitle" style="margin:0">Lesson 1</h3><div><button onclick="goHomeFromDrill()" style="background:#fff;color:#0b2d7a;padding:6px 12px;border-radius:20px;border:0;font-weight:700">🏠 Home</button> <span id="timerText" style="background:#ffffff22;padding:6px 12px;border-radius:20px;font-weight:900">5:00</span> <button onclick="exitDrill()" style="background:#e23b3b;color:#fff;padding:6px 12px;border-radius:20px;border:0">❌ Exit</button></div></div>
+<div style="display:flex;gap:5px;margin:10px 0" id="sticks"></div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px"><div id="tipsArea" style="display:none"></div><div class="letters" id="lettersRow"></div><div class="kbWrap" id="kbWrap"></div></div>
+</div>
+
+<div id="gameScreen">
+<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px"><h3 style="margin:0">1.5 WordTrim Game</h3><div><button onclick="goHomeFromGame()" style="background:#fff;color:#0b2d7a;padding:6px 12px;border-radius:20px;border:0;font-weight:700">🏠 Home</button> <button onclick="exitGame()" style="background:#e23b3b;color:#fff;padding:6px 12px;border-radius:20px;border:0">❌ Exit</button></div></div>
+<div style="text-align:center;margin-top:8px">Score: <b id="gameScore">0</b> | Chance Left: <b id="gameLives">5</b> | Missed: <b id="gameMissed">0 / 5</b></div>
+<div class="gameArea" id="gameArea"><div id="fallWord" class="fallWord">dad</div><div class="ground"></div></div>
+<input id="gameInput" class="gameInput" placeholder="Word likhein + Enter dabayein...">
+<p style="text-align:center;font-size:13px">Word neechay girne se pehle likh lein. 5 words gir gaye to Game Out!</p>
+</div>
+
+<div id="resultScreen"><div class="card"><div style="font-size:40px">🎉</div><h2 style="margin:6px 0;color:#0b2d7a">Drill Complete!</h2><p id="resultTitle">1.2 New keys</p><div class="statGrid"><div class="stat"><small>Score</small><b id="rScore">0</b></div><div class="stat"><small>Speed</small><b id="rWPM">0 WPM</b></div><div class="stat"><small>Accuracy</small><b id="rAcc">100%</b></div><div class="stat"><small>Correct / Wrong</small><b id="rCW">0 / 0</b></div><div class="stat"><small>Time Taken</small><b id="rTaken">0s</b></div><div class="stat"><small>Time Saved</small><b id="rSaved">0s</b></div></div><p id="rMsg" style="font-weight:700;color:#1bb65d">بہت اچھے!</p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn btnY" onclick="retryDrill()">🔄 Try Again</button><button class="btn" style="background:#0b2d7a;color:#fff" onclick="backToList()">📋 Exercises List</button><button class="btn" style="background:#fff;border:1px solid #0b2d7a;color:#0b2d7a" onclick="goHomeFromResult()">🏠 Home</button><button class="btn btnG" onclick="nextExercise()">Next →</button></div></div></div>
+<script>
+const PASS="786786";
+const WORDS=["dad","sad","add","all","ask","fall","lad","lass","fad","sal","salad","flask","salsa"];
+const SENTENCES=["Dad had a salad.","A sad lad had a fall.","Al had a flask.","Dad asked Sal.","A lass had a salad.","Sal had a flask.","Dad had a lad.","Al asked Dad."];
+let lessons=[["1","The Home Row"],["2","E and I"],["3","R and U"],["4","T and O"],["5","Left Shift Key"],["6","Right Shift and Period"],["7","C and Comma"],["8","G H and Apostrophe"],["9","V N and Question Mark"],["10","W and M"],["11","Q and P"],["12","B and Y"],["13","Z and X"],["14","Number Row"],["15","Symbols"],["16","Special Keys"],["17","Other Keys"]];
+let exercises=[
+{id:"1.1",title:"Learning tips - Fingers on Keyboard",type:"tips"},
+{id:"1.2",title:"New keys: Home row",type:"new",keys:"a s d f j k l ;"},
+{id:"1.3",title:"Word drill - Meaningful Words",type:"word"},
+{id:"1.4",title:"Sentence drill",type:"sentence"},
+{id:"1.5",title:"WordTrim game",type:"game"},
+{id:"1.6",title:"Skills test - Letters + Words + Sentences",type:"skill"}
+];
+let done=JSON.parse(localStorage.getItem("l1_done")||"[]");
+let curIdx=0,target=[],pos=0,correct=0,total=0,startTime=0,timeLeft=300,timerInt=null;
+const $=id=>document.getElementById(id);
+function renderHome(){
+$("homeLessons").innerHTML="";
+lessons.forEach((l,i)=>{
+let div=document.createElement("div");
+let locked=i!==0;
+div.className="lessonCard"+(locked?" locked":"");
+div.innerHTML=`<div class="exNum">${l[0]}</div><div><b>Lesson ${l[0]}: ${l[1]}</b><br><small>${locked?"🔒 Locked":"Tap to open"}</small></div><div style="margin-left:auto">›</div>`;
+div.onclick=()=>{if(locked){alert("🔒 Locked hai. Pehle Lesson 1 complete karein.");return;} openLesson1();};
+$("homeLessons").appendChild(div);
+});
+}
+function openLesson1(){$("homeScreen").style.display="none";$("lessonScreen").style.display="block";renderList();}
+function goHome(){$("homeScreen").style.display="block";$("lessonScreen").style.display="none";renderHome();}
+function goHomeFromDrill(){clearInterval(timerInt);$("drillScreen").classList.remove("show");goHome();}
+function goHomeFromGame(){stopGame();$("gameScreen").classList.remove("show");goHome();}
+function goHomeFromResult(){$("resultScreen").classList.remove("show");goHome();}
+function renderList(){
+$("exList").innerHTML="";$("progText").textContent=done.length+" / 6 Completed";$("progFill").style.width=(done.length/6*100)+"%";
+exercises.forEach((e,i)=>{let isDone=done.includes(e.id);let d=document.createElement("div");d.className="ex";d.innerHTML=`<div class="exNum" style="background:${isDone?"#1bb65d":"#0b2d7a"}">${isDone?"✓":i+1}</div><div><b>${e.id} ${e.title}</b><br><small>${isDone?"Completed":"Tap to start"}</small></div><div style="margin-left:auto">›</div>`;d.onclick=()=>openExercise(i);$("exList").appendChild(d);});
+}
+function openExercise(i){curIdx=i;let e=exercises[i];if(e.type==="game"){startGameScreen();return;}if(e.type==="tips"){showTips();return;}startDrill();}
+  function showTips(){
+curIdx=0;let t=`<div class="tipsBox"><h2 style="color:#0b2d7a;margin:0">👋 Fingers on Keyboard</h2><p>Apni ungliyan Home Row par rakhein.</p><div class="fingerRow">
+<div class="finger" style="background:#e23b3b">Left<br><small>Pinky - A</small></div>
+<div class="finger" style="background:#ff8c00">Left<br><small>Ring - S</small></div>
+<div class="finger" style="background:#1bb65d">Left<br><small>Middle - D</small></div>
+<div class="finger" style="background:#2a64d8">Left<br><small>Index - F</small></div>
+<div class="finger" style="background:#2a64d8">Right<br><small>Index - J</small></div>
+<div class="finger" style="background:#1bb65d">Right<br><small>Middle - K</small></div>
+<div class="finger" style="background:#ff8c00">Right<br><small>Ring - L</small></div>
+<div class="finger" style="background:#e23b3b">Right<br><small>Pinky - ;</small></div>
+</div><p><b>Rule:</b> Har finger sirf apni key dabayega. Nazar screen par, keyboard par nahi.</p><button class="btn" style="background:#0b2d7a;color:#fff" onclick="finishTips()">Samajh Gaya - Next →</button></div>`;
+$("drillScreen").classList.add("show");$("tipsArea").style.display="block";$("tipsArea").innerHTML=t;$("lettersRow").innerHTML="";$("kbWrap").innerHTML="";$("drillTitle").textContent="1.1 Learning Tips";$("timerText").textContent="--:--";
+}
+function finishTips(){markDone("1.1");$("drillScreen").classList.remove("show");$("tipsArea").style.display="none";renderList();openExercise(1);}
+function markDone(id){if(!done.includes(id)){done.push(id);localStorage.setItem("l1_done",JSON.stringify(done));}}
+function startDrill(){
+let e=exercises[curIdx];$("drillTitle").textContent=e.id+" "+e.title;$("tipsArea").style.display="none";
+if(e.type==="new"){target=e.keys.split(" ");}
+else if(e.type==="word"){target=[];for(let i=0;i<6;i++){let w=WORDS[Math.floor(Math.random()*WORDS.length)];target.push(...w.split("")," ");}target.pop();}
+else if(e.type==="sentence"){let s=SENTENCES[Math.floor(Math.random()*SENTENCES.length)];target=s.split("");}
+else if(e.type==="skill"){target=[];let s=SENTENCES[Math.floor(Math.random()*SENTENCES.length)];target=s.split("");for(let i=0;i<4;i++){target.push(" ");let w=WORDS[Math.floor(Math.random()*WORDS.length)];target.push(...w.split(""));}}
+pos=0;correct=0;total=0;timeLeft=300;startTime=Date.now();
+clearInterval(timerInt);timerInt=setInterval(()=>{timeLeft--;let m=Math.floor(timeLeft/60),ss=String(timeLeft%60).padStart(2,"0");$("timerText").textContent=m+":"+ss;if(timeLeft<=0){finishDrill();}},1000);
+renderDrill();$("drillScreen").classList.add("show");
+}
+function renderDrill(){
+$("lettersRow").innerHTML="";$("sticks").innerHTML="";
+target.forEach((ch,i)=>{let d=document.createElement("div");d.className="keyBtn";d.id="lb-"+i;d.textContent=ch===" "?"␣":ch;if(i===pos)d.classList.add("next");$("lettersRow").appendChild(d);
+let s=document.createElement("div");s.className="tower";s.id="st-"+i;$("sticks").appendChild(s);});
+renderKB();
+}
+function renderKB(){
+let rows=[["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l",";"],["z","x","c","v","b","n","m",",",".","/"]];
+let h="";rows.forEach(r=>{h+=`<div class="kbRow">`;r.forEach(k=>{let cur=target[pos]||"";h+=`<div class="kbKey ${k===cur.toLowerCase()?"nextKey":""}">${k}</div>`;});h+=`</div>`;});
+h+=`<div class="kbRow"><div class="kbKey" style="min-width:280px">SPACE</div></div>`;$("kbWrap").innerHTML=h;
+}
+document.addEventListener("keydown",e=>{
+if(!$("drillScreen").classList.contains("show"))return;
+if(e.key==="Escape"){exitDrill();return;}
+if(e.key==="Shift"||e.key==="Control"||e.key==="Alt"||e.key==="CapsLock")return;
+if(pos>=target.length)return;
+let exp=target[pos];let got=e.key;
+total++;
+let lb=$("lb-"+pos);let st=$("st-"+pos);
+if(got===exp){correct++;if(lb)lb.classList.add("correct");if(st)st.classList.add("green");}
+else{if(lb)lb.classList.add("wrong");}
+pos++;
+if(pos>=target.length){finishDrill();return;}
+renderDrill();
+});
+function finishDrill(){
+clearInterval(timerInt);let taken=Math.floor((Date.now()-startTime)/1000);if(taken<1)taken=1;
+let acc=total?Math.round(correct/total*100):100;let wpm=Math.round((correct/5)/(taken/60));
+let score=Math.round(acc*0.7+wpm*2+correct);
+$("rScore").textContent=score;$("rWPM").textContent=wpm+" WPM";$("rAcc").textContent=acc+"%";$("rCW").textContent=correct+" / "+(total-correct);$("rTaken").textContent=taken+"s";$("rSaved").textContent=Math.max(0,300-taken)+"s";
+$("resultTitle").textContent=exercises[curIdx].id+" "+exercises[curIdx].title;
+$("rMsg").textContent=acc>=90?"بہت اچھے! 🌟":acc>=70?"اچھا ہے، جاری رکھیں!":"کوشش جاری رکھیں!";
+markDone(exercises[curIdx].id);$("drillScreen").classList.remove("show");$("resultScreen").classList.add("show");renderList();
+}
+function exitDrill(){clearInterval(timerInt);$("drillScreen").classList.remove("show");renderList();}
+function retryDrill(){$("resultScreen").classList.remove("show");startDrill();}
+function backToList(){$("resultScreen").classList.remove("show");renderList();}
+function nextExercise(){$("resultScreen").classList.remove("show");if(curIdx<exercises.length-1){openExercise(curIdx+1);}else{goHome();}}
+let gInt=null,gTop=0,gWord="dad",gScore=0,gLives=5,gMissed=0;
+function startGameScreen(){gScore=0;gLives=5;gMissed=0;gTop=0;updateGameUI();$("gameScreen").classList.add("show");$("gameInput").value="";$("gameInput").focus();nextWord();startFall();}
+function updateGameUI(){$("gameScore").textContent=gScore;$("gameLives").textContent=gLives;$("gameMissed").textContent=gMissed+" / 5";}
+function nextWord(){gWord=WORDS[Math.floor(Math.random()*WORDS.length)];gTop=0;$("fallWord").textContent=gWord;}
+function startFall(){clearInterval(gInt);gInt=setInterval(()=>{gTop+=2;$("fallWord").style.top=gTop+"px";if(gTop>300){gMissed++;gLives--;updateGameUI();if(gLives<=0){gameOver();}else{nextWord();}}},30);}
+function gameOver(){stopGame();alert("Game Over! Score: "+gScore);markDone("1.5");$("gameScreen").classList.remove("show");renderList();}
+function stopGame(){clearInterval(gInt);}
+function exitGame(){stopGame();$("gameScreen").classList.remove("show");renderList();}
+$("gameInput").addEventListener("keydown",e=>{if(e.key==="Enter"){let v=$("gameInput").value.trim().toLowerCase();if(v===gWord){gScore+=10;updateGameUI();nextWord();}else{gScore=Math.max(0,gScore-2);updateGameUI();}$("gameInput").value="";}});
+document.getElementById("logoTrigger").onclick=()=>{let p=prompt("Admin Password likhein:");if(p===PASS){if(confirm("Kya aap saara progress reset karna chahte hain?")){localStorage.removeItem("l1_done");done=[];renderHome();renderList();alert("Reset ho gaya!");}}else if(p!==null){alert("Ghalat password!");}};
+renderHome();
+</script>
+</body>
+</html>
