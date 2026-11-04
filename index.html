@@ -1,27 +1,153 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>TypingMaster Junior</title><style>*{box-sizing:border-box}body{margin:0;background:#dbe6f6;font-family:Arial;color:#2a3a5a}.topLogo{background:#eef3ff;padding:10px 18px;display:flex;align-items:center;gap:8px;cursor:pointer;border-bottom:1px solid #c5d5f0}.topLogo b{color:#0b3aa8;font-size:22px}.mainFrame{max-width:1080px;margin:10px auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 8px 24px #0002;border:1px solid #b8c9e8}.courseHeader{display:flex;justify-content:space-between;padding:12px 18px;background:#f7f9ff;border-bottom:1px solid #dde6f5}.tabs{display:flex;gap:6px;flex-wrap:wrap}.tab{width:28px;height:23px;display:flex;justify-content:center;align-items:center;font-size:12px;border-radius:4px;cursor:pointer;background:#eef2fb;border:1px solid #d6e2f5}.tab.active{background:#1a4fc0;color:#fff;font-weight:900}.tab.locked{opacity:.5}.lessonView{display:grid;grid-template-columns:1fr 200px;min-height:440px}.leftContent{padding:18px}.subList{display:flex;flex-direction:column;gap:8px;max-width:400px;margin:0 auto}.subItem{display:flex;gap:8px;padding:8px;border:1px solid #d6e2f5;border-radius:8px;background:linear-gradient(180deg,#fff,#eef3ff);cursor:pointer;font-size:13px}.subItem.locked{opacity:.6}.bottomNav{display:flex;justify-content:space-between;margin-top:20px}.navBtn{width:42px;height:42px;border-radius:50%;background:#2a9df4;color:#fff;display:flex;justify-content:center;align-items:center}.progressBar{height:14px;background:#fff;border:1px solid #c5d5f0;border-radius:3px;overflow:hidden}.progressFill{height:100%;background:#1a4fc0;width:25%}.rightPanel{background:#f7f9ff;border-left:1px solid #dde6f5}.rBtn{padding:11px 14px;font-size:12px;font-weight:700;border-left:4px solid transparent}.rBtn.active{background:#dbe9ff;border-left-color:#1a4fc0}#drillScreen{position:fixed;inset:0;z-index:99999;background:linear-gradient(180deg,#081b3f,#204ba6);display:none;flex-direction:column;padding:10px}#drillScreen.show{display:flex}.keyBtn{width:54px;height:54px;background:linear-gradient(180deg,#fff,#c9d8f5);border-radius:8px;display:flex;justify-content:center;align-items:center;font-weight:900;color:#0b2d7a}.keyBtn.correct{background:#1bb65d!important;color:#fff}.keyBtn.wrong{background:#e23b3b!important;color:#fff}.keyBtn.next{outline:3px solid #ffde59}.lettersRow{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:900px;margin:0 auto}.keyboardWrap{max-width:820px;margin:10px auto 0;background:#07132f;border-radius:14px;padding:10px}.kbRow{display:flex;justify-content:center;gap:4px;margin:4px 0}.kbKey{min-width:32px;height:38px;background:linear-gradient(180deg,#eef3ff,#a8b8d8);border-radius:6px;display:flex;justify-content:center;align-items:center;font-size:12px;font-weight:800}.kbKey.nextKey{background:#ffde59!important}.tower{flex:1;height:14px;background:#ffffff22;border-radius:8px}.tower.green{background:#1bb65d}</style></head><body>
-<div class="topLogo" id="logoTrigger"><div style="width:28px;height:28px;background:#0b3aa8;border-radius:50%;color:#fff;display:flex;justify-content:center;align-items:center;font-weight:900">T</div><b>TypingMaster</b></div>
-<div class="mainFrame"><div class="courseHeader"><div><h2>Junior Typing Course</h2><div class="tabs" id="tabs"></div></div><div>Close X</div></div><div class="lessonView"><div class="leftContent"><h3 id="lessonTitle"></h3><div class="subList" id="subList"></div><div class="bottomNav"><div onclick="prevLesson()" style="cursor:pointer;text-align:center"><div class="navBtn">◀</div><small>Lesson <span id="prevL">1</span></small></div><div onclick="nextLesson()" style="cursor:pointer;text-align:center"><div class="navBtn">▶</div><small>Lesson <span id="nextL">2</span></small></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;background:#f1f5ff;padding:12px;margin-top:12px"><div><small>Course progress</small><div class="progressBar"><div class="progressFill" id="progFill"></div></div></div><div><button style="width:100%;background:#2a9df4;color:#fff;border:0;padding:8px;border-radius:6px">Change course</button></div></div></div><div class="rightPanel"><div class="rBtn active">STUDYING</div><div class="rBtn">TYPING METER</div><div class="rBtn">CUSTOM REVIEW</div><div class="rBtn">TYPING TEST</div><div class="rBtn">GAMES</div><div class="rBtn">STATISTICS</div><div class="rBtn">SETTINGS</div><div class="rBtn">ABOUT</div></div></div></div>
-<div id="drillScreen"><div style="display:flex;justify-content:space-between;color:#fff"><h3 id="drillTitle" style="margin:0"></h3><button onclick="exitDrill()" style="background:#e23b3b;color:#fff;padding:5px 12px;border-radius:14px;border:0">Exit</button></div><div style="display:flex;gap:4px;margin:8px 0" id="sticks"></div><div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px"><div id="tipsArea" style="display:none;width:95%;max-width:700px"></div><div class="lettersRow" id="lettersRow"></div><div class="keyboardWrap" id="keyboardWrap"></div></div></div>
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Typing Master v1.0 - 17 Lessons Final</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8ecf5;font-family:Arial,Helvetica,sans-serif;color:#1a2a4a}
+.topbar{background:linear-gradient(90deg,#0b2d7a,#2a64d8);color:white;display:flex;justify-content:space-between;align-items:center;padding:10px 14px;cursor:pointer}
+.topbar h1{margin:0;font-size:22px;font-weight:900}.topbar h1 span{color:#ffde59}
+.mainWrap{max-width:1150px;margin:10px auto;display:grid;grid-template-columns:220px 1fr;min-height:88vh;background:white;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px #0b2d7a22}
+.sidebar{background:linear-gradient(180deg,#0d2b6b,#123a8a);color:#cfe0ff;padding:10px 0;display:flex;flex-direction:column}
+.sideBtn{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;font-size:13px;font-weight:700;border-left:4px solid transparent}
+.sideBtn:hover,.sideBtn.active{background:#ffffff14;border-left-color:#ffde59;color:white}
+.content{padding:12px;background:#f3f6ff}
+.banner{display:grid;grid-template-columns:1fr 160px;gap:10px;background:linear-gradient(180deg,#ffffff,#e6eeff);border:2px solid #d6e2ff;border-radius:14px;padding:12px;align-items:center}
+.banner h2{margin:0;color:#0b2d7a;font-size:22px}.banner h2 span{color:#2a64d8}
+.progressBox{background:linear-gradient(180deg,#fff9db,#ffe58f);border-radius:12px;padding:10px;border:1px solid #ffe58f;text-align:center}
+.lessonsPanel{background:white;border-radius:14px;padding:12px;margin-top:12px;border:1px solid #dde6ff}
+.lessonsPanel h3{margin:0 0 10px;background:linear-gradient(90deg,#1a4fc0,#3a86f5);color:white;padding:10px 12px;border-radius:10px;font-size:15px}
+.lessonGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.lessonCard{display:flex;align-items:center;gap:8px;background:linear-gradient(180deg,#ffffff,#eef3ff);border:1px solid #d6e2ff;border-radius:10px;padding:9px 10px;cursor:pointer}
+.lessonCard:hover{transform:translateY(-2px);box-shadow:0 6px 14px #0b2d7a15}
+.lessonCard.locked{opacity:.55;background:#f0f1f4}
+.lessonNum{width:28px;height:28px;background:#0b2d7a;color:white;border-radius:50%;display:flex;justify-content:center;align-items:center;font-weight:900;font-size:13px}
+.lessonCard:first-child .lessonNum{background:#1bb65d}
+.lessonInfo b{font-size:13px;display:block}.lessonInfo small{font-size:11px;color:#5b6a8a}
+.bottomGrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
+.card{background:white;border:1px solid #dde6ff;border-radius:12px;padding:10px}
+.circle{width:76px;height:76px;border-radius:50%;background:conic-gradient(#1bb65d 75%, #e6eaf5 0);display:flex;justify-content:center;align-items:center;margin:6px auto}
+.circle span{background:white;width:56px;height:56px;border-radius:50%;display:flex;justify-content:center;align-items:center;font-weight:900;font-size:18px;color:#1bb65d}
+.quickBtn{display:flex;align-items:center;gap:8px;background:#eef3ff;border:1px solid #d6e2ff;border-radius:20px;padding:8px 12px;margin:6px 0;cursor:pointer;font-size:13px;font-weight:700}
+.footer{display:flex;justify-content:space-between;padding:8px 14px;background:#d9e6ff;font-size:12px;font-weight:700;color:#0b2d7a}
+.kbTypes{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.kbTypes button{padding:6px 10px;border-radius:20px;font-size:11px;background:#e0e9ff;color:#0b2d7a;border:1px solid #b8c9ee;cursor:pointer}.kbTypes button.active{background:#0b2d7a;color:white}
+#drillScreen{position:fixed;inset:0;z-index:99999;background:linear-gradient(180deg,#081b3f,#204ba6);display:none;flex-direction:column;padding:10px}
+#drillScreen.show{display:flex}
+.keyBtn{width:64px;height:64px;background:linear-gradient(180deg,#ffffff,#c9d8f5);border-radius:12px;display:flex;justify-content:center;align-items:center;font-size:24px;font-weight:900;color:#0b2d7a;box-shadow:0 5px 0 #7a8eb8,0 8px 14px #0005;transition:.1s}
+.keyBtn.correct{background:linear-gradient(180deg,#c0ffd6,#1bb65d)!important;color:white;transform:translateY(3px)}.keyBtn.wrong{background:linear-gradient(180deg,#ffd0d0,#e23b3b)!important;color:white;animation:shake .2s}.keyBtn.next{outline:3px solid #ffde59}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.lettersRow{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:900px;margin:0 auto}
+.keyboardWrap{max-width:840px;margin:14px auto 0;background:#07132f;border-radius:16px;padding:12px 10px}
+.kbRow{display:flex;justify-content:center;gap:5px;margin:5px 0}
+.kbKey{min-width:36px;height:42px;background:linear-gradient(180deg,#eef3ff,#a8b8d8);border-radius:7px;display:flex;justify-content:center;align-items:center;font-size:13px;font-weight:800;color:#0b2d7a;box-shadow:0 3px 0 #6f83a8;transition:.1s}
+.kbKey.nextKey{background:#ffde59!important;box-shadow:0 0 12px #ffde59;color:black;animation:pulse 1s infinite}.kbKey.pressed{transform:translateY(3px);box-shadow:none}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.fingers{display:flex;justify-content:center;gap:6px;margin-top:8px}.finger{width:54px;text-align:center;transition:.18s}.finger .dot{width:38px;height:18px;margin:0 auto;border-radius:50% 50% 4px 4px}.finger.push .dot{transform:translateY(14px) scale(1.4)}.finger.active .dot{transform:scale(1.2);box-shadow:0 0 10px currentColor}
+.tower{flex:1;height:16px;background:#ffffff22;border-radius:10px;transition:.4s}.tower.green{background:linear-gradient(#7af3a7,#1bb65d);box-shadow:0 0 8px #1bb65d88;transform:scaleY(1.3)}
+@media(max-width:900px){.mainWrap{grid-template-columns:1fr}.lessonGrid{grid-template-columns:1fr 1fr}.bottomGrid{grid-template-columns:1fr}.banner{grid-template-columns:1fr}.keyBtn{width:52px;height:52px;font-size:20px}}
+</style>
+</head>
+<body>
+<div class="topbar" id="adminTrigger"><div><h1>⌨️ Typing <span>Master</span></h1><small>Type Smart... Type Fast... (Tap 5x for Admin)</small></div><div style="background:#ffffff22;padding:4px 10px;border-radius:20px;font-size:12px">🎓 Student</div></div>
+<div class="mainWrap">
+<div class="sidebar">
+<div class="sideBtn active">🏠 Home</div><div class="sideBtn">📈 Typing Meter</div><div class="sideBtn">📝 Custom Review</div><div class="sideBtn">🏆 Typing Test</div><div class="sideBtn">🎮 Games</div><div class="sideBtn">📊 Statistics</div><div class="sideBtn">⚙️ Settings</div><div class="sideBtn">ℹ️ About</div>
+<div style="margin-top:auto;padding:12px;text-align:center"><div style="font-size:36px">🏆</div><small style="color:#ffde59;font-weight:800">Practice Today... Type Better Tomorrow!</small></div>
+</div>
+<div class="content">
+<div class="banner"><div><h2>Welcome to<br><span>Typing Master</span></h2><small>Your Complete Typing Tutor - 17 Lessons</small><div class="kbTypes" id="kbTypes"><button class="active" onclick="setKb('QWERTY')">QWERTY</button><button onclick="setKb('AZERTY')">AZERTY</button><button onclick="setKb('QWERTZ')">QWERTZ</button><button onclick="setKb('DVORAK')">DVORAK</button></div></div><div class="progressBox"><b>Your Progress</b><div style="font-size:22px;margin:6px 0">📊</div><b id="progressText">Good Job!</b><br><small>Keep Practicing...</small></div></div>
+<div class="lessonsPanel">
+<h3>📖 Typing Lessons (1 – 17) <span id="kbLabel" style="float:right;background:#ffffff33;padding:2px 8px;border-radius:10px;font-size:11px">QWERTY</span> <span id="pageLabel" style="float:right;margin-right:8px;font-size:11px"></span></h3>
+<div class="lessonGrid" id="lessonGrid"></div>
+<div style="display:flex;justify-content:space-between;margin-top:10px"><button onclick="prevPage()" style="padding:8px 14px;border-radius:20px;background:#e0e9ff;border:1px solid #b8c9ee;cursor:pointer">◀ Previous</button><button onclick="nextPage()" style="padding:8px 14px;border-radius:20px;background:#0b2d7a;color:white;cursor:pointer">Next ▶</button></div>
+</div>
+<div class="bottomGrid"><div class="card"><b>📈 Typing Progress</b><div class="circle"><span id="circlePct">75%</span></div><small>Speed: <span id="speedStat">32 WPM</span><br>Accuracy: <span id="accStat">96%</span><br>Net: <span id="netStat">31 WPM</span></small></div><div class="card"><b>⚡ Quick Access</b><div class="quickBtn">▶️ Typing Test</div><div class="quickBtn">🎮 Play Games</div><div class="quickBtn">📊 View Statistics</div></div><div class="card"><b>💡 Typing Tips</b><ul style="padding-left:10px;margin:0"><li style="font-size:12px;margin:6px 0">Use Home Row: A S D F and J K L ;</li><li style="font-size:12px;margin:6px 0">Keep thumbs on Space Bar.</li><li style="font-size:12px;margin:6px 0">Accuracy first, then speed.</li><li style="font-size:11px;color:#0b2d7a;font-weight:700">Admin: Tap top bar 5x - pass 786786</li></ul></div></div>
+</div>
+</div>
+<div class="footer"><span>⌨️ Typing Master v1.0 - 17 Lessons</span><span>Learn • Practice • Achieve</span><span style="color:green">🟢 Ready to Practice!</span></div>
+<div id="drillScreen">
+<div style="display:flex;justify-content:space-between;align-items:center;color:white;flex-wrap:wrap;gap:8px"><h3 id="drillTitle" style="margin:0">Lesson 1</h3><div style="display:flex;align-items:center;gap:8px"><div id="timerText" style="background:#ffffff22;padding:6px 12px;border-radius:20px;font-weight:900">5:00</div><div id="levelInfo" style="background:#ffde59;color:black;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:800">Level 1</div></div><div style="display:flex;gap:6px"><button onclick="pauseDrill()" id="pauseBtn" style="background:#f7b731;color:black;padding:6px 10px;border-radius:20px;border:0;font-weight:700;cursor:pointer">⏸️ Pause</button><button onclick="resumeDrill()" id="resumeBtn" style="display:none;background:#1bb65d;color:white;padding:6px 10px;border-radius:20px;border:0;font-weight:700;cursor:pointer">▶️ Resume</button><button onclick="restartDrill()" style="background:#4b6584;color:white;padding:6px 10px;border-radius:20px;border:0;cursor:pointer">🔄 Restart</button><button onclick="exitDrill()" style="background:#e23b3b;color:white;padding:6px 10px;border-radius:20px;border:0;cursor:pointer">❌ Exit</button></div></div>
+<div style="display:flex;gap:5px;margin:10px 0" id="sticks"></div>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:16px"><div class="lettersRow" id="lettersRow"></div><div class="keyboardWrap" id="keyboardWrap"></div><div class="fingers" id="fingers"></div><div id="saveTime" style="color:#ffde59;font-weight:900"></div></div>
+</div>
 <script>
-const PASS="786786";let adminUnlocked=localStorage.getItem("tt_admin")==="1";let curLesson=1,selectedSub="",targetSeq=[],curIdx=0,greenSticks=0;
-const lessonsData=[{id:1,title:"The Home Row",subs:[["1.1","Learning tips","tips"],["1.2","New keys: Home row","newkeys","a s d f j k l ;"],["1.3","Word drill","word","a s d f j k l ;"],["1.4","Sentence drill","sentence","a s d f j k l ;"],["1.5","Skills test","skilltest","a s d f j k l ;"]]},{id:2,title:"E and I",subs:[["2.1","New keys : E I","newkeys","e i"],["2.2","Word drill","word","e i"],["2.3","Sentence drill","sentence","e i"],["2.4","Skills test","skilltest","e i"]]},{id:3,title:"R and U",subs:[["3.1","New keys R U","newkeys","r u"],["3.2","Word drill","word","r u"],["3.3","Sentence drill","sentence","r u"],["3.4","Skills test","skilltest","r u"]]},{id:4,title:"T and O",subs:[["4.1","New keys T O","newkeys","t o"],["4.2","Word drill","word","t o"],["4.3","Sentence drill","sentence","t o"],["4.4","Skills test","skilltest","t o"]]},{id:5,title:"Left Shift",subs:[["5.1","The Shift key","tips"],["5.2","New keys Left Shift","newkeys","A S D F"],["5.3","Word drill","word","A S D F"],["5.4","Sentence drill","sentence","A S D F"],["5.5","Skills test","skilltest","A S D F"]]},{id:6,title:"Right Shift and Period",subs:[["6.1","New keys Right Shift","newkeys","J K L ;"],["6.2","Word drill","word","J K L ;"],["6.3","New key Period","newkeys","."],["6.4","Sentence drill","sentence","."],["6.5","Skills test","skilltest","."]]},{id:7,title:"C and Comma",subs:[["7.1","New keys C ,","newkeys","c ,"],["7.2","Word drill","word","c ,"],["7.3","Sentence drill","sentence","c ,"],["7.4","Skills test","skilltest","c ,"]]},{id:8,title:"G H and Apostrophe",subs:[["8.1","New keys: G H","newkeys","g h"],["8.2","Word drill","word","g h"],["8.3","New key: '","newkeys","'"],["8.4","Sentence drill","sentence","g h '"],["8.5","Skills test","skilltest","g h '"]]},{id:9,title:"V N and ?",subs:[["9.1","New keys: V N","newkeys","v n"],["9.2","Word drill","word","v n"],["9.3","New key: ?","newkeys","?"],["9.4","Sentence drill","sentence","v n ?"],["9.5","Skills test","skilltest","v n ?"]]},{id:10,title:"Keys W and M",subs:[["10.1","New keys: W M","newkeys","w m"],["10.2","Word drill","word","w m"],["10.3","Sentence drill","sentence","w m"],["10.4","Skills test","skilltest","w m"]]},{id:11,title:"Keys Q and P",subs:[["11.1","New keys: Q P","newkeys","q p"],["11.2","Word drill","word","q p"],["11.3","Sentence drill","sentence","q p"],["11.4","Skills test","skilltest","q p"]]},{id:12,title:"Keys B and Y",subs:[["12.1","New keys: B Y","newkeys","b y"],["12.2","Word drill","word","b y"],["12.3","Sentence drill","sentence","b y"],["12.4","Skills test","skilltest","b y"]]},{id:13,title:"Keys Z and X",subs:[["13.1","New keys: Z X","newkeys","z x"],["13.2","Word drill","word","z x"],["13.3","Sentence drill","sentence","z x"],["13.4","Skills test","skilltest","z x"]]},{id:14,title:"Numbers Row",subs:[["14.1","New keys: 1 2 3 4 5","newkeys","1 2 3 4 5"],["14.2","New keys: 6 7 8 9 0","newkeys","6 7 8 9 0"],["14.3","Word drill Numbers","word","1 2 3 4 5 6 7 8 9 0"],["14.4","Skills test","skilltest","1 2 3 4 5 6 7 8 9 0"]]},{id:15,title:"Symbols",subs:[["15.1","New keys: ! @ # $ %","newkeys","! @ # $ %"],["15.2","New keys: ^ & * ( )","newkeys","^ & * ( )"],["15.3","Skills test","skilltest","! @ # $ % ^ & * ( )"]]},{id:16,title:"Capital Letters Review",subs:[["16.1","Review Capitals","newkeys","A B C D E F G"],["16.2","Word drill Capitals","word","A B C D E F G H I J"],["16.3","Skills test","skilltest","A B C D E F G H I J"]]},{id:17,title:"Final Skills Test",subs:[["17.1","Final Review Tips","tips"],["17.2","All Keys Test","skilltest","a b c d e f g h i j k l m n o p q r s t u v w x y z"],["17.3","Speed Test","skilltest","The quick brown fox jumps"]] }];
+const ADMIN_PASS="786786";
+let adminUnlocked=localStorage.getItem("tt_admin")==="1";
+let currentKb="QWERTY";
+const kbLayouts={
+QWERTY:[["q","w","e","r","t","y","u","i","o","p"],["a","s","d","f","g","h","j","k","l",";","'"],["z","x","c","v","b","n","m",",",".","/"]],
+AZERTY:[["a","z","e","r","t","y","u","i","o","p"],["q","s","d","f","g","h","j","k","l","m"],["w","x","c","v","b","n",",",";","!"]],
+QWERTZ:[["q","w","e","r","t","z","u","i","o","p"],["a","s","d","f","g","h","j","k","l","ö","ä"],["y","x","c","v","b","n","m",",",".","-"]],
+DVORAK:[["'"," ,",".","p","y","f","g","c","r","l"],["a","o","e","u","i","d","h","t","n","s"],[";","q","j","k","x","b","m","w","v","z"]]
+};
+const lessons=[
+["1","The Home Row","a s d f j k l ;"],
+["2","E and I","e i"],
+["3","R and U","r u"],
+["4","T and O","t o"],
+["5","Left Shift Key","a s d f"],
+["6","Right Shift and Period","j k l ; ."],
+["7","C and Comma","c ,"],
+["8","G H and Apostrophe","g h '"],
+["9","V N and Question Mark","v n ?"],
+["10","W and M","w m"],
+["11","Q and P","q p"],
+["12","B and Y","b y"],
+["13","Z and X","z x"],
+["14","Number Row","1 2 3 4 5 6 7 8 9 0"],
+["15","Symbols","! @ # $ % ^ & *"],
+["16","Special Keys","space enter tab backspace"],
+["17","Other Keys","caps ctrl alt delete arrows"]
+];
+let page=0,selected=0,cumulative=[],targetSeq=[],curIdx=0,timeLeft=300,timerInt=null,paused=false,greenSticks=0,streak=0,correct=0,total=0;
 const $=id=>document.getElementById(id);
-function buildTabs(){$("tabs").innerHTML="";lessonsData.forEach(l=>{let free=l.id<=2||adminUnlocked;let d=document.createElement("div");d.className="tab"+(l.id===curLesson?" active":"")+(free?"":" locked");d.textContent=l.id;d.onclick=()=>{curLesson=l.id;buildTabs();buildLesson();};$("tabs").appendChild(d);});}
-function buildLesson(){let l=lessonsData.find(x=>x.id===curLesson);$("lessonTitle").textContent=`Lesson ${l.id}: ${l.title}`;$("prevL").textContent=Math.max(1,l.id-1);$("nextL").textContent=Math.min(17,l.id+1);$("progFill").style.width=(l.id/17*100)+"%";let free=l.id<=2||adminUnlocked;$("subList").innerHTML="";l.subs.forEach(s=>{let d=document.createElement("div");d.className="subItem"+(free?"":" locked");d.innerHTML=`<div style="width:18px;height:18px;border-radius:50%;background:#e6eaf2;display:flex;justify-content:center;align-items:center;font-size:10px">${free?"":"🔒"}</div><b>${s[0]}</b> <span style="text-decoration:underline">${s[1]}</span>`;d.onclick=()=>{if(!free)return;selectedSub=s[0];startSubLesson(l.id,s);};$("subList").appendChild(d);});}
-function prevLesson(){curLesson=Math.max(1,curLesson-1);buildTabs();buildLesson();}
-function nextLesson(){curLesson=Math.min(17,curLesson+1);buildTabs();buildLesson();}
-function buildKb(){let layout=["qwertyuiop","asdfghjkl;'","zxcvbnm,./"];let w=$("keyboardWrap");w.innerHTML="";layout.forEach(r=>{let div=document.createElement("div");div.className="kbRow";[...r].forEach(k=>{let key=document.createElement("div");key.className="kbKey";key.id="vk-"+k;key.textContent=k;div.appendChild(key);});w.appendChild(div);});let sr=document.createElement("div");sr.className="kbRow";let sp=document.createElement("div");sp.className="kbKey";sp.style.flex="1";sp.style.maxWidth="220px";sp.id="vk- ";sp.textContent="SPACE";sr.appendChild(sp);w.appendChild(sr);}
+const fingerMap={"q":"c1","a":"c1","z":"c1","w":"c2","s":"c2","x":"c2","e":"c3","d":"c3","c":"c3","r":"c4","f":"c4","v":"c4","t":"c4","g":"c4","b":"c4","y":"c7","h":"c7","n":"c7","u":"c7","j":"c7","m":"c7","i":"c8","k":"c8",",":"c8","o":"c9","l":"c9",".":"c9","p":"c10",";":"c10"};
+const fingerClasses=["c1","c2","c3","c4","c4","c7","c7","c8","c9","c10"];
+const colors=["#ff6b6b","#feca57","#48dbfb","#1dd1a1","#1dd1a1","#00d2d3","#00d2d3","#54a0ff","#feca57","#ff6b6b"];
+function setKb(k){currentKb=k;$("kbLabel").textContent=k;document.querySelectorAll("#kbTypes button").forEach(b=>b.classList.toggle("active",b.textContent===k));renderLessons();}
+function renderLessons(){
+$("lessonGrid").innerHTML="";
+let start=page*12, end=Math.min(start+12,17);
+let slice=lessons.slice(start,end);
+slice.forEach((l)=>{
+let idx=lessons.indexOf(l);
+let free=idx<4||adminUnlocked;
+let div=document.createElement("div");div.className="lessonCard"+(free?"":" locked");
+div.innerHTML=`<div class="lessonNum">${l[0]}</div><div class="lessonInfo"><b>Lesson ${l[0]}</b><small>${l[1]}</small></div><div style="margin-left:auto">›</div>`;
+div.onclick=()=>{if(!free){alert("🔒 Premium Locked. Tap top bar 5x for admin.");return;}openLesson(idx);};
+$("lessonGrid").appendChild(div);
+});
+$("pageLabel").textContent=`Page ${page+1} of 2 (${start+1}-${end} / 17)`;
+$("progressText").textContent=adminUnlocked?"Admin: All 17 Unlocked":"Good Job! Keep Practicing...";
+}
+function prevPage(){page=Math.max(0,page-1);renderLessons();}
+function nextPage(){page=Math.min(1,page+1);renderLessons();}
+let clicks=0,ct=null;$("adminTrigger").addEventListener("click",()=>{clicks++;clearTimeout(ct);ct=setTimeout(()=>clicks=0,2000);if(clicks>=5){clicks=0;let p=prompt("Enter Admin Password:");if(p===ADMIN_PASS){localStorage.setItem("tt_admin","1");adminUnlocked=true;renderLessons();alert("✅ Admin Unlocked - All 17 Lessons");}else if(p!==null)alert("❌ Wrong");}});
+function getCumulative(idx){let pool=[];for(let i=0;i<=idx;i++){pool=pool.concat(lessons[i][2].split(" ").filter(x=>x));}return [...new Set(pool)];}
+function openLesson(i){selected=i;cumulative=getCumulative(i);startDrill();}
+function generateSeq(){
+let level=1;if(greenSticks>=3&&greenSticks<6)level=2;else if(greenSticks>=6&&greenSticks<8)level=3;else if(greenSticks>=8)level=4;
+let pool=cumulative;let seq=[];for(let n=0;n<8;n++){if(level===1)seq.push(pool[Math.floor(Math.random()*pool.length)]);else{let w="";for(let k=0;k<level;k++)w+=pool[Math.floor(Math.random()*pool.length)];seq.push(w);}}
+$("levelInfo").textContent=level===1?"Level 1: Single":`Level ${level}: ${level} letters`;return seq.join(" ").split("").filter(c=>c!==" ");
+}
+function startDrill(){$("drillScreen").classList.add("show");$("drillTitle").textContent="Lesson "+lessons[selected][0]+": "+lessons[selected][1];buildKb();buildSticks();greenSticks=0;streak=0;correct=0;total=0;timeLeft=300;paused=false;$("pauseBtn").style.display="inline-block";$("resumeBtn").style.display="none";$("saveTime").textContent="";startTimer();nextSeq();}
+function buildKb(){let layout=kbLayouts[currentKb]||kbLayouts.QWERTY;let wrap=$("keyboardWrap");wrap.innerHTML="";layout.forEach(r=>{let div=document.createElement("div");div.className="kbRow";r.forEach(k=>{let key=document.createElement("div");key.className="kbKey";key.id="vk-"+k;key.textContent=k;key.dataset.finger=fingerMap[k]||"c6";div.appendChild(key);});wrap.appendChild(div);});let sr=document.createElement("div");sr.className="kbRow";let sp=document.createElement("div");sp.className="kbKey";sp.style.flex="1";sp.style.maxWidth="240px";sp.id="vk- ";sp.textContent="SPACE";sr.appendChild(sp);wrap.appendChild(sr);let fw=$("fingers");fw.innerHTML="";["Pinky L","Ring L","Middle L","Index L","Index L","Index R","Index R","Middle R","Ring R","Pinky R"].forEach((lbl,i)=>{let fd=document.createElement("div");fd.className="finger";fd.style.color=colors[i];fd.id="finger-"+i;fd.innerHTML=`<div class="dot" style="background:${colors[i]}"></div><label style="font-size:9px;color:#a9bddf">${lbl}</label>`;fw.appendChild(fd);});}
 function buildSticks(){let s=$("sticks");s.innerHTML="";for(let i=0;i<10;i++){let d=document.createElement("div");d.className="tower";d.id="stick-"+i;s.appendChild(d);}}
-function startSubLesson(lid,sub){let keys=sub[3]||"a s d f";$("drillScreen").classList.add("show");$("drillTitle").textContent=`Lesson ${lid}: ${sub[1]}`;buildKb();buildSticks();greenSticks=0;$("tipsArea").style.display="none";if(sub[2]==="tips"){$("tipsArea").style.display="block";$("tipsArea").innerHTML=`<div style="background:#fff9db;padding:14px;border-radius:10px"><b>${sub[1]}</b><br><br><button onclick="nextSub()" style="background:#0b3aa8;color:#fff;padding:8px 16px;border-radius:20px;border:0">Continue</button></div>`;$("lettersRow").style.display="none";return;}$("lettersRow").style.display="flex";startDrill(keys,sub[2]);}
-function nextSub(){let l=lessonsData.find(x=>x.id===curLesson);let idx=l.subs.findIndex(x=>x[0]===selectedSub);if(idx<l.subs.length-1){selectedSub=l.subs[idx+1][0];startSubLesson(curLesson,l.subs[idx+1]);}else{exitDrill();}}
-function getCumulativeKeys(id,cur){let all=[];for(let i=1;i<id;i++){let ld=lessonsData.find(x=>x.id===i);if(ld)ld.subs.forEach(s=>{if(s[2]==="newkeys"&&s[3])all.push(...s[3].split(" ").filter(x=>x));});}all.push(...cur.split(" ").filter(x=>x));return [...new Set(all)];}
-function startDrill(keysStr,type){let pool=type==="word"||type==="sentence"||type==="skilltest"?getCumulativeKeys(curLesson,keysStr):keysStr.split(" ").filter(x=>x);let seq=[];for(let i=0;i<20;i++){let w="";let len=type==="newkeys"?1:2+Math.floor(Math.random()*3);for(let k=0;k<len;k++)w+=pool[Math.floor(Math.random()*pool.length)];seq.push(w);}targetSeq=seq.join(" ").split("");curIdx=0;renderLetters();highlightNext();}
-function renderLetters(){let row=$("lettersRow");row.innerHTML="";targetSeq.forEach((ch,i)=>{let b=document.createElement("div");b.className="keyBtn";b.id="lb-"+i;b.textContent=ch===" "?"Space":ch.toUpperCase();if(i===0)b.classList.add("next");row.appendChild(b);});}
-function highlightNext(){document.querySelectorAll(".kbKey").forEach(k=>k.classList.remove("nextKey"));if(curIdx>=targetSeq.length)return;let ch=targetSeq[curIdx].toLowerCase();let vk=$("vk-"+ch);if(vk)vk.classList.add("nextKey");}
-function exitDrill(){$("drillScreen").classList.remove("show");}
-document.addEventListener("keydown",e=>{if(!$("drillScreen").classList.contains("show"))return;if(e.key===" ")e.preventDefault();let p=e.key.toLowerCase();if(e.code==="Space")p=" ";if(curIdx>=targetSeq.length)return;let ex=targetSeq[curIdx].toLowerCase();if(p===ex){let lb=$("lb-"+curIdx);if(lb){lb.classList.add("correct");lb.classList.remove("next");}greenSticks=Math.min(10,greenSticks+0.6);let st=$("stick-"+Math.floor(greenSticks));if(st)st.classList.add("green");curIdx++;if(curIdx>=targetSeq.length){setTimeout(()=>nextSub(),600);}else{let nl=$("lb-"+curIdx);if(nl)nl.classList.add("next");highlightNext();}}else{let lb=$("lb-"+curIdx);if(lb){lb.classList.add("wrong");setTimeout(()=>lb.classList.remove("wrong"),200);}}});
-let clicks=0,ct=null;$("logoTrigger").addEventListener("click",()=>{clicks++;clearTimeout(ct);ct=setTimeout(()=>clicks=0,2000);if(clicks>=5){clicks=0;let p=prompt("Enter Code:");if(p===PASS){localStorage.setItem("tt_admin","1");adminUnlocked=true;buildTabs();buildLesson();alert("All 17 Lessons Unlocked");}}});
-buildTabs();buildLesson();
+function nextSeq(){targetSeq=generateSeq();curIdx=0;renderLetters();highlightNext();}
+function renderLetters(){let row=$("lettersRow");row.innerHTML="";targetSeq.forEach((ch,i)=>{let b=document.createElement("div");b.className="keyBtn";b.id="lb-"+i;b.textContent=ch.toUpperCase();if(i===0)b.classList.add("next");row.appendChild(b);});}
+function highlightNext(){document.querySelectorAll(".kbKey").forEach(k=>k.classList.remove("nextKey"));document.querySelectorAll(".finger").forEach(f=>{f.classList.remove("active");f.classList.remove("push");});if(curIdx>=targetSeq.length)return;let ch=targetSeq[curIdx].toLowerCase();let vk=$("vk-"+ch);if(vk){vk.classList.add("nextKey");let fm=vk.dataset.finger;let idx=fingerClasses.indexOf(fm);if(idx>=0)$("finger-"+idx)?.classList.add("active");}}
+function startTimer(){clearInterval(timerInt);timerInt=setInterval(()=>{if(paused)return;timeLeft--;let m=Math.floor(timeLeft/60),s=timeLeft%60;$("timerText").textContent=`${m}:${String(s).padStart(2,"0")}`;if(timeLeft<=0)finish(true);},1000);}
+function pauseDrill(){paused=true;$("pauseBtn").style.display="none";$("resumeBtn").style.display="inline-block";} function resumeDrill(){paused=false;$("pauseBtn").style.display="inline-block";$("resumeBtn").style.display="none";} function restartDrill(){startDrill();} function exitDrill(){clearInterval(timerInt);$("drillScreen").classList.remove("show");}
+function finish(timeUp){clearInterval(timerInt);if(!timeUp&&greenSticks>=10){let saved=timeLeft;$("saveTime").textContent=`Saving Time: ${saved}s - بہت اچھے!`;setTimeout(()=>{if(confirm(`🎉 Completed! Saving Time ${saved}s. Next Lesson?`)){selected=Math.min(lessons.length-1,selected+1);cumulative=getCumulative(selected);startDrill();}else exitDrill();},400);}else if(timeUp){alert("⏰ Time Up!");exitDrill();}}
+document.addEventListener("keydown",e=>{
+if(!$("drillScreen").classList.contains("show")||paused)return;if(e.key==="Escape"){exitDrill();return;}if(e.key===" ")e.preventDefault();
+let pressed=e.key.toLowerCase();let vk=$("vk-"+pressed);if(vk){vk.classList.add("pressed");let fm=vk.dataset.finger;let idx=fingerClasses.indexOf(fm);let finger=$("finger-"+idx);if(finger){finger.classList.add("push");setTimeout(()=>{finger.classList.remove("push");vk.classList.remove("pressed");},180);}}
+if(curIdx>=targetSeq.length)return;let expected=targetSeq[curIdx].toLowerCase();if(pressed===expected){let lb=$("lb-"+curIdx);if(lb){lb.classList.add("correct");lb.classList.remove("next");}correct++;total++;streak++;if(streak>=4){greenSticks=Math.min(10,greenSticks+1);let st=$("stick-"+(greenSticks-1));if(st)st.classList.add("green");streak=0;}curIdx++;if(curIdx>=targetSeq.length){setTimeout(()=>{nextSeq();if(greenSticks>=10)finish(false);},280);}else{let nl=$("lb-"+curIdx);if(nl)nl.classList.add("next");highlightNext();}}else{let lb=$("lb-"+curIdx);if(lb){lb.classList.add("wrong");setTimeout(()=>lb.classList.remove("wrong"),280);}total++;streak=Math.max(0,streak-1);}
+let acc=total?Math.round(correct/total*100):100;let sec=Math.max(1,300-timeLeft);let wpm=Math.round((total/5)/(sec/60));$("speedStat").textContent=wpm+" WPM";$("accStat").textContent=acc+"%";$("netStat").textContent=Math.round(wpm*acc/100)+" WPM";$("circlePct").textContent=acc+"%";
+});
+renderLessons();
 </script>
 </body>
 </html>
