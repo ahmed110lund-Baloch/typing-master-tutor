@@ -160,10 +160,15 @@ color:white;
 cursor:pointer;
 }
 
+.action:disabled{
+opacity:.5;
+cursor:not-allowed;
+}
+
 .secondary{background:#64748b}
 .action:hover{opacity:.88}
 
-/* PRACTICE */
+/* PRACTICE SCREEN */
 
 #practice{
 display:none;
@@ -252,64 +257,99 @@ background:#ffe0e0;
 border-color:#e34b4b;
 }
 
+/* KEYBOARD STAGE: HANDS OVER THE KEYS */
+
+.keyboard-stage{
+width:100%;
+max-width:950px;
+margin:15px auto;
+overflow-x:auto;
+overflow-y:hidden;
+}
+
+.keyboard-stage-inner{
+position:relative;
+min-width:650px;
+width:100%;
+padding-top:0;
+}
+
 #fingerGuide{
+position:absolute;
+z-index:5;
+left:50%;
+bottom:49px;
+transform:translateX(-50%);
+width:min(90%,620px);
 display:flex;
-justify-content:center;
+justify-content:space-between;
+align-items:flex-end;
+gap:25px;
+padding:0;
+margin:0;
+pointer-events:none;
+}
+
+.hand-group{
+display:flex;
+flex-direction:column;
 align-items:center;
-gap:35px;
-padding:12px;
-min-height:145px;
+flex:1;
+}
+
+.hand-label{
+font-size:10px;
+font-weight:bold;
+color:#52647c;
+margin-bottom:3px;
+background:#ffffffd9;
+padding:3px 7px;
+border-radius:5px;
 }
 
 .hand{
 display:flex;
 align-items:flex-end;
-gap:5px;
-position:relative;
-padding:12px;
-background:#eef3fa;
-border-radius:18px;
+justify-content:center;
+gap:9px;
+padding:5px;
+background:transparent;
+border-radius:12px;
 }
 
 .finger{
-width:17px;
-border-radius:12px 12px 6px 6px;
-border:2px solid #8fa4bf;
-transition:.25s;
+width:32px;
+border-radius:13px 13px 7px 7px;
+border:2px solid #ffffff;
+box-shadow:0 2px 5px #172b4d55;
+transition:transform .2s,filter .2s;
+opacity:.88;
 }
 
 .pinky{height:48px;background:#ff7777}
-.ring{height:65px;background:#ffbd69}
-.middle{height:76px;background:#f5df63}
-.index{height:68px;background:#55c9a5}
+.ring{height:60px;background:#ffbd69}
+.middle{height:68px;background:#f5df63}
+.index{height:62px;background:#55c9a5}
 
 .thumb{
-width:24px;
-height:38px;
+width:28px;
+height:37px;
 transform:rotate(-35deg);
-margin-left:5px;
+margin-left:3px;
 background:#7aa7ff;
 }
 
 .finger.active{
-filter:brightness(1.15);
-border-color:white;
-box-shadow:0 0 16px currentColor;
-transform:translateY(-12px);
-animation:fingerTap .6s infinite alternate;
+filter:brightness(1.2);
+border-color:#ffffff;
+box-shadow:0 0 13px #ffffff,0 0 20px currentColor;
+transform:translateY(8px);
+animation:fingerTap .35s infinite alternate;
 }
 
 @keyframes fingerTap{
-from{transform:translateY(-12px)}
+from{transform:translateY(8px)}
 to{transform:translateY(0)}
-}
-
-.hand-label{
-text-align:center;
-font-size:12px;
-color:#52647c;
-font-weight:bold;
-margin-bottom:5px;
 }
 
 /* KEYBOARD */
@@ -320,8 +360,9 @@ flex-direction:column;
 gap:6px;
 width:100%;
 max-width:950px;
-margin:15px auto;
-overflow-x:auto;
+margin:0 auto;
+position:relative;
+z-index:2;
 }
 
 .keyboard-row{
@@ -360,6 +401,7 @@ transform:translateY(2px);
 
 .key.active-key{
 outline:3px solid #1556b8;
+outline-offset:1px;
 }
 
 /* INPUT */
@@ -468,28 +510,46 @@ border-radius:8px;
 }
 
 @media(max-width:750px){
+
 .sidebar{width:65px;padding:10px 5px}
+
 .sidebar button{
 font-size:0;
 text-align:center;
 padding:13px 4px;
 }
+
 .sidebar button:first-letter{font-size:18px}
+
 main{padding:14px}
-.lessons{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+
+.lessons{
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:9px;
+}
+
 .lesson{padding:12px}
 .lesson h3{font-size:13px}
+
 .target{padding:13px;font-size:23px}
-#fingerGuide{gap:12px;padding:8px}
-.hand{gap:3px;padding:8px}
-.finger{width:13px}
-.pinky{height:38px}
-.ring{height:50px}
-.middle{height:60px}
-.index{height:52px}
-.thumb{width:19px;height:30px}
-.key{height:32px;font-size:10px}
-.keyboard-layout{overflow-x:auto}
+
+#fingerGuide{
+width:570px;
+gap:15px;
+}
+
+.hand{gap:7px;padding:3px}
+
+.finger{width:29px}
+.pinky{height:43px}
+.ring{height:54px}
+.middle{height:62px}
+.index{height:56px}
+.thumb{width:24px;height:32px}
+
+.key{height:36px;font-size:11px}
+
+#rotateHint{display:block}
 }
 
 @media(max-width:400px){
@@ -565,32 +625,6 @@ main{padding:14px}
 
 <div class="targets" id="targets"></div>
 
-<div id="fingerGuide">
-
-<div>
-<div class="hand-label">LEFT HAND</div>
-<div class="hand">
-<div class="finger pinky" id="left-pinky"></div>
-<div class="finger ring" id="left-ring"></div>
-<div class="finger middle" id="left-middle"></div>
-<div class="finger index" id="left-index"></div>
-<div class="finger thumb"></div>
-</div>
-</div>
-
-<div>
-<div class="hand-label">RIGHT HAND</div>
-<div class="hand">
-<div class="finger thumb"></div>
-<div class="finger index" id="right-index"></div>
-<div class="finger middle" id="right-middle"></div>
-<div class="finger ring" id="right-ring"></div>
-<div class="finger pinky" id="right-pinky"></div>
-</div>
-</div>
-
-</div>
-
 <p style="text-align:center">
 Correct: <b id="correctCount">0</b> |
 Wrong: <b id="wrongCount">0</b>
@@ -609,7 +643,41 @@ placeholder="Type the letters shown above"
 aria-label="Typing input">
 </div>
 
+<!-- HANDS AND KEYBOARD ARE NOW IN THE SAME STAGE -->
+
+<div class="keyboard-stage">
+<div class="keyboard-stage-inner">
+
+<div id="fingerGuide">
+
+<div class="hand-group">
+<div class="hand-label">LEFT HAND</div>
+<div class="hand">
+<div class="finger pinky" id="left-pinky"></div>
+<div class="finger ring" id="left-ring"></div>
+<div class="finger middle" id="left-middle"></div>
+<div class="finger index" id="left-index"></div>
+<div class="finger thumb"></div>
+</div>
+</div>
+
+<div class="hand-group">
+<div class="hand-label">RIGHT HAND</div>
+<div class="hand">
+<div class="finger thumb"></div>
+<div class="finger index" id="right-index"></div>
+<div class="finger middle" id="right-middle"></div>
+<div class="finger ring" id="right-ring"></div>
+<div class="finger pinky" id="right-pinky"></div>
+</div>
+</div>
+
+</div>
+
 <div class="keyboard-layout" id="keyboard"></div>
+
+</div>
+</div>
 
 <div class="practice-controls">
 <button class="action" onclick="pausePractice()">Pause</button>
@@ -780,7 +848,7 @@ b:"left-index",
 y:"right-index",
 z:"left-pinky",
 x:"left-ring",
-" ":"thumb"
+" ":"left-index"
 };
 
 // =====================================
@@ -1192,7 +1260,9 @@ letters.push(keys[randomIndex]);
 
 }
 
-letters.sort();
+// Sort in ascending order, then reverse for descending.
+
+letters.sort((a,b)=>a.localeCompare(b));
 
 if(stage.direction === "descending"){
 letters.reverse();
@@ -1266,7 +1336,7 @@ return fingerMap[character.toLowerCase()] || "left-index";
 
 function highlightFinger(character){
 
-document.querySelectorAll(".finger").forEach(finger=>{
+document.querySelectorAll("#fingerGuide .finger").forEach(finger=>{
 finger.classList.remove("active");
 });
 
