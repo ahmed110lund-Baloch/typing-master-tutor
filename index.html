@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,15 +82,8 @@ padding:28px;
 margin-bottom:25px;
 }
 
-.welcome h1{
-margin:0 0 10px;
-font-size:25px;
-}
-
-.welcome p{
-margin:0;
-line-height:1.6;
-}
+.welcome h1{margin:0 0 10px;font-size:25px}
+.welcome p{margin:0;line-height:1.6}
 
 .section-title{margin:25px 0 15px}
 
@@ -104,9 +98,8 @@ background:white;
 border:1px solid #e6eaf2;
 border-radius:13px;
 padding:18px;
-min-height:115px;
+min-height:125px;
 cursor:pointer;
-transition:.2s;
 box-shadow:0 3px 10px #172b4d0a;
 }
 
@@ -115,14 +108,10 @@ transform:translateY(-3px);
 box-shadow:0 7px 18px #172b4d15;
 }
 
-.lesson h3{
-margin:8px 0;
-font-size:16px;
-}
-
+.lesson h3{margin:8px 0;font-size:16px}
 .lesson small{color:#718096}
 
-.lesson .number{
+.number{
 display:inline-flex;
 width:29px;
 height:29px;
@@ -135,21 +124,10 @@ font-weight:bold;
 }
 
 .locked{opacity:.72}
+.locked .number{background:#f0f1f4;color:#777}
 
-.locked .number{
-background:#f0f1f4;
-color:#777;
-}
-
-.free{
-color:#15945b!important;
-font-weight:bold;
-}
-
-.premium{
-color:#b17a17!important;
-font-weight:bold;
-}
+.free{color:#15945b!important;font-weight:bold}
+.premium{color:#b17a17!important;font-weight:bold}
 
 footer{
 text-align:center;
@@ -173,7 +151,7 @@ border-radius:8px;
 background:white;
 }
 
-button.action{
+.action{
 border:0;
 padding:11px 18px;
 border-radius:8px;
@@ -182,11 +160,10 @@ color:white;
 cursor:pointer;
 }
 
-button.secondary{background:#64748b}
+.secondary{background:#64748b}
+.action:hover{opacity:.88}
 
-button.action:hover{opacity:.88}
-
-/* PRACTICE SCREEN */
+/* PRACTICE */
 
 #practice{
 display:none;
@@ -223,12 +200,22 @@ margin:15px auto;
 
 .tower{
 width:25px;
+height:100px;
 background:#dce2ea;
 border-radius:5px 5px 0 0;
+display:flex;
+align-items:end;
+overflow:hidden;
+}
+
+.tower-fill{
+width:100%;
+height:0%;
+background:#16a05b;
 transition:.3s;
 }
 
-.tower.green{background:#16a05b}
+.tower.green .tower-fill{background:#16a05b}
 
 .targets{
 display:flex;
@@ -265,8 +252,6 @@ background:#ffe0e0;
 border-color:#e34b4b;
 }
 
-/* HAND AND FINGER GUIDE */
-
 #fingerGuide{
 display:flex;
 justify-content:center;
@@ -289,30 +274,14 @@ border-radius:18px;
 .finger{
 width:17px;
 border-radius:12px 12px 6px 6px;
-background:#b8c7dc;
 border:2px solid #8fa4bf;
 transition:.25s;
 }
 
-.pinky{
-height:48px;
-background:#ff7777;
-}
-
-.ring{
-height:65px;
-background:#ffbd69;
-}
-
-.middle{
-height:76px;
-background:#f5df63;
-}
-
-.index{
-height:68px;
-background:#55c9a5;
-}
+.pinky{height:48px;background:#ff7777}
+.ring{height:65px;background:#ffbd69}
+.middle{height:76px;background:#f5df63}
+.index{height:68px;background:#55c9a5}
 
 .thumb{
 width:24px;
@@ -379,27 +348,37 @@ box-shadow:0 3px 0 #142033;
 transition:.15s;
 }
 
-.key.wide{
-flex:1.8;
-font-size:11px;
-}
-
 .key.space{flex:5}
-
-.key.finger-pinky{background:#d95c67}
-.key.finger-ring{background:#dc9146}
-.key.finger-middle{background:#c3a936}
-.key.finger-index{background:#319c80}
+.key.wide{flex:1.8}
 
 .key.correct{
 background:#16c784!important;
 transform:translateY(2px);
-box-shadow:0 1px 0 #087a4c;
 }
 
 .key.wrong{background:#ef4444!important}
 
-/* CONTROLS AND RESULTS */
+.key.active-key{
+outline:3px solid #1556b8;
+}
+
+/* INPUT */
+
+.typing-area{
+text-align:center;
+margin:15px auto;
+}
+
+#typingInput{
+width:min(90%,400px);
+padding:13px;
+border:2px solid #1556b8;
+border-radius:9px;
+font-size:18px;
+text-align:center;
+}
+
+/* CONTROLS */
 
 .practice-controls{
 display:flex;
@@ -407,6 +386,13 @@ justify-content:center;
 gap:10px;
 flex-wrap:wrap;
 margin:18px;
+}
+
+#pauseMessage{
+display:none;
+color:#1556b8;
+font-weight:bold;
+text-align:center;
 }
 
 #result{
@@ -481,68 +467,28 @@ padding:8px;
 border-radius:8px;
 }
 
-/* MOBILE RESPONSIVE */
-
 @media(max-width:750px){
-
-.sidebar{
-width:65px;
-padding:10px 5px;
-}
-
+.sidebar{width:65px;padding:10px 5px}
 .sidebar button{
 font-size:0;
 text-align:center;
 padding:13px 4px;
 }
-
 .sidebar button:first-letter{font-size:18px}
-
 main{padding:14px}
-
-.lessons{
-grid-template-columns:repeat(2,minmax(0,1fr));
-gap:9px;
-}
-
+.lessons{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
 .lesson{padding:12px}
-
 .lesson h3{font-size:13px}
-
-.target{
-padding:13px;
-font-size:23px;
-}
-
-#fingerGuide{
-gap:12px;
-padding:8px;
-}
-
-.hand{
-gap:3px;
-padding:8px;
-}
-
+.target{padding:13px;font-size:23px}
+#fingerGuide{gap:12px;padding:8px}
+.hand{gap:3px;padding:8px}
 .finger{width:13px}
-
 .pinky{height:38px}
 .ring{height:50px}
 .middle{height:60px}
 .index{height:52px}
-
-.thumb{
-width:19px;
-height:30px;
-}
-
-.key{
-height:32px;
-font-size:10px;
-}
-
-.key.wide{font-size:8px}
-
+.thumb{width:19px;height:30px}
+.key{height:32px;font-size:10px}
 .keyboard-layout{overflow-x:auto}
 }
 
@@ -619,8 +565,6 @@ font-size:10px;
 
 <div class="targets" id="targets"></div>
 
-<div style="text-align:center">
-
 <div id="fingerGuide">
 
 <div>
@@ -647,19 +591,22 @@ font-size:10px;
 
 </div>
 
-<p>Correct: <b id="correctCount">0</b> | Wrong: <b id="wrongCount">0</b></p>
+<p style="text-align:center">
+Correct: <b id="correctCount">0</b> |
+Wrong: <b id="wrongCount">0</b>
+</p>
 
-<p id="pauseMessage" style="display:none;color:#1556b8;font-weight:bold">Practice Paused</p>
+<p id="pauseMessage">Practice Paused</p>
 
+<div class="typing-area">
 <input
 id="typingInput"
+type="text"
 autocomplete="off"
 autocapitalize="off"
 spellcheck="false"
-aria-label="Typing input"
-style="position:absolute;opacity:0;width:1px;height:1px"
->
-
+placeholder="Type the letters shown above"
+aria-label="Typing input">
 </div>
 
 <div class="keyboard-layout" id="keyboard"></div>
@@ -706,78 +653,69 @@ Net Speed<br><b id="speedResult">0 WPM</b>
 </div>
 </div>
 
-<div id="adminModal">
+<!-- ADMIN MODAL -->
 
+<div id="adminModal">
 <div class="modal">
 <h2>Enter Password</h2>
-
 <input id="adminPassword" type="password" placeholder="Password">
-
 <button class="action" onclick="checkAdmin()">Unlock</button>
-
 <button class="action secondary" onclick="closeAdmin()">Cancel</button>
-
 <p id="passwordError" style="color:red"></p>
 </div>
-
 </div>
-
 
 <script>
 
 // =====================================
-// PART 2-A: TYPING PRACTICE ENGINE
+// LESSON INFORMATION
 // =====================================
 
-// LESSON NAMES
-
 const lessonNames = [
-  "Home Row",
-  "E and I",
-  "R and U",
-  "T and O",
-  "Left Shift Key",
-  "Right Shift and Period",
-  "C and Comma",
-  "G, H and Apostrophe",
-  "V, N and Question Mark",
-  "W and M",
-  "Q and P",
-  "B and Y",
-  "Z and X",
-  "Number Row",
-  "Symbols",
-  "Special Keys",
-  "Other Keys"
+"Home Row",
+"E and I",
+"R and U",
+"T and O",
+"Left Shift Key",
+"Right Shift and Period",
+"C and Comma",
+"G, H and Apostrophe",
+"V, N and Question Mark",
+"W and M",
+"Q and P",
+"B and Y",
+"Z and X",
+"Number Row 0–9",
+"Symbols",
+"Special Keys",
+"Other Keys"
 ];
-
-// LESSON KEYS
 
 const lessonKeys = [
-  "asdfjkl;",
-  "ei",
-  "ru",
-  "to",
-  "Shift",
-  "Shift.",
-  "c,",
-  "gh'",
-  "vn?",
-  "wm",
-  "qp",
-  "by",
-  "zx",
-  "0123456789",
-  "!@#$%^&*()",
-  "Enter Backspace Tab",
-  "Other Keys"
+"asdfjkl;",
+"ei",
+"ru",
+"to",
+"asdfjkl;",
+"asdfjkl.",
+"c,",
+"gh'",
+"vn?",
+"wm",
+"qp",
+"by",
+"zx",
+"0123456789",
+"!@#$%^&*()",
+"asdfjkl;",
+"qwertyuiop"
 ];
 
+// =====================================
 // GLOBAL VARIABLES
+// =====================================
 
 let currentLesson = 0;
-let currentExercise = 0;
-
 let selectedLayout = "QWERTY";
 
 let practiceActive = false;
@@ -792,777 +730,877 @@ let typedTotal = 0;
 
 let targetText = "";
 let targetIndex = 0;
-
 let stageIndex = 0;
 
-let stages = [
-  { count: 2, direction: "ascending" },
-  { count: 3, direction: "ascending" },
-  { count: 4, direction: "ascending" },
-  { count: 4, direction: "descending" },
-  { count: 3, direction: "descending" },
-  { count: 2, direction: "descending" }
+let keyMistakes = {};
+
+let adminUnlocked = false;
+let adminClicks = 0;
+let clickResetTimer = null;
+
+const stages = [
+{count:2,direction:"ascending"},
+{count:3,direction:"ascending"},
+{count:4,direction:"ascending"},
+{count:4,direction:"descending"},
+{count:3,direction:"descending"},
+{count:2,direction:"descending"}
 ];
 
+// =====================================
 // FINGER MAPPING
+// =====================================
 
 const fingerMap = {
-  a: "left-pinky",
-  s: "left-ring",
-  d: "left-middle",
-  f: "left-index",
-
-  g: "left-index",
-
-  h: "right-index",
-  j: "right-index",
-  k: "right-middle",
-  l: "right-ring",
-  ";": "right-pinky",
-
-  e: "left-middle",
-  i: "right-middle",
-  r: "left-index",
-  u: "right-index",
-  t: "left-index",
-  o: "right-ring",
-
-  c: "left-middle",
-  ",": "right-middle",
-  v: "left-index",
-  n: "right-index",
-  w: "left-ring",
-  m: "right-index",
-  q: "left-pinky",
-  p: "right-pinky",
-  b: "left-index",
-  y: "right-index",
-  z: "left-pinky",
-  x: "left-ring",
-  " ": "thumb"
+a:"left-pinky",
+s:"left-ring",
+d:"left-middle",
+f:"left-index",
+g:"left-index",
+h:"right-index",
+j:"right-index",
+k:"right-middle",
+l:"right-ring",
+";":"right-pinky",
+e:"left-middle",
+i:"right-middle",
+r:"left-index",
+u:"right-index",
+t:"left-index",
+o:"right-ring",
+c:"left-middle",
+",":"right-middle",
+v:"left-index",
+n:"right-index",
+w:"left-ring",
+m:"right-index",
+q:"left-pinky",
+p:"right-pinky",
+b:"left-index",
+y:"right-index",
+z:"left-pinky",
+x:"left-ring",
+" ":"thumb"
 };
 
+// =====================================
 // RENDER LESSONS
+// =====================================
 
-function renderLessons() {
-  const container = document.getElementById("lessons");
-  if (!container) return;
+function renderLessons(){
 
-  container.innerHTML = "";
+const container = document.getElementById("lessons");
+container.innerHTML = "";
 
-  lessonNames.forEach((name, index) => {
-    const card = document.createElement("div");
+lessonNames.forEach((name,index)=>{
 
-    card.className = "lesson-card";
+const card = document.createElement("div");
 
-    const locked = index >= 4;
+const locked = index >= 4 && !adminUnlocked;
 
-    card.innerHTML = `
-      <div class="lesson-number">
-        ${index + 1}
-      </div>
+card.className = "lesson" + (locked ? " locked" : "");
 
-      <h3>${name}</h3>
+card.innerHTML = `
+<div class="number">${index+1}</div>
+<h3>${name}</h3>
+<small class="${locked ? "premium" : "free"}">
+${locked ? "🔒 Premium Lesson" : "Free Lesson"}
+</small>
+<br><br>
+<button class="action" ${locked ? "disabled" : ""}>
+${locked ? "Locked" : "Start Lesson"}
+</button>
+`;
 
-      <p>
-        ${locked ? "Premium Lesson" : "Free Lesson"}
-      </p>
+card.querySelector("button").addEventListener("click",()=>{
+selectLesson(index);
+});
 
-      <button
-        ${locked ? "disabled" : ""}
-        onclick="selectLesson(${index})">
-        ${locked ? "Locked" : "Start Lesson"}
-      </button>
-    `;
+container.appendChild(card);
 
-    container.appendChild(card);
-  });
+});
+
 }
 
+// =====================================
 // SELECT LESSON
-
-function selectLesson(index) {
-  if (index >= 4) {
-    alert("This lesson is locked. Premium access is required.");
-    return;
-  }
-
-  currentLesson = index;
-
-  const title = document.getElementById("practiceLessonTitle");
-
-  if (title) {
-    title.textContent = "Lesson " + (index + 1) + ": " + lessonNames[index];
-  }
-
-  startPractice();
-}
-
-// ADMIN UNLOCK
-
-let adminClicks = 0;
-
-function titleAdminClick() {
-  adminClicks++;
-
-  if (adminClicks >= 5) {
-    adminClicks = 0;
-
-    const modal = document.getElementById("adminModal");
-
-    if (modal) {
-      modal.style.display = "flex";
-    }
-  }
-}
-
-function unlockAdmin() {
-  const passwordInput = document.getElementById("adminPassword");
-
-  if (!passwordInput) return;
-
-  if (passwordInput.value === "786786") {
-    document.querySelectorAll(".lesson-card button").forEach(button => {
-      button.disabled = false;
-      button.textContent = "Open Lesson";
-    });
-
-    const modal = document.getElementById("adminModal");
-
-    if (modal) {
-      modal.style.display = "none";
-    }
-
-    alert("Admin access enabled.");
-  } else {
-    alert("Incorrect password.");
-  }
-}
-
-// NAVIGATION
-
-function showDashboard() {
-  const dashboard = document.getElementById("dashboard");
-  const practice = document.getElementById("practiceScreen");
-
-  if (dashboard) dashboard.style.display = "block";
-  if (practice) practice.style.display = "none";
-
-  stopTimer();
-  practiceActive = false;
-}
-
-function changeLayout(layout) {
-  selectedLayout = layout;
-
-  createKeyboard();
-}
-
-// START PRACTICE
-
-function startPractice() {
-  const dashboard = document.getElementById("dashboard");
-  const practice = document.getElementById("practiceScreen");
-
-  if (dashboard) dashboard.style.display = "none";
-  if (practice) practice.style.display = "block";
-
-  resetPractice();
-}
-
-// RESET PRACTICE
-
-function resetPractice() {
-  stopTimer();
-
-  practiceActive = true;
-  practicePaused = false;
-
-  timeLeft = 300;
-
-  correctTotal = 0;
-  wrongTotal = 0;
-  typedTotal = 0;
-
-  targetIndex = 0;
-  stageIndex = 0;
-
-  targetText = "";
-
-  updateTimerDisplay();
-  updateTowers();
-
-  createKeyboard();
-
-  nextTarget();
-
-  focusTyping();
-
-  startTimer();
-}
-
-// TIMER
-
-function startTimer() {
-  stopTimer();
-
-  timerInterval = setInterval(() => {
-    if (!practiceActive || practicePaused) return;
-
-    timeLeft--;
-
-    updateTimerDisplay();
-
-    if (timeLeft <= 0) {
-      finishPractice();
-    }
-  }, 1000);
-}
-
-function stopTimer() {
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
-}
-
-function updateTimerDisplay() {
-  const timer = document.getElementById("timer");
-
-  if (timer) {
-    timer.textContent = formatTime(timeLeft);
-  }
-}
-
-// PROGRESS TOWERS
-
-function updateTowers() {
-  const towers = document.querySelectorAll(".tower");
-
-  const progress = Math.min(
-    100,
-    Math.floor((correctTotal / 300) * 100)
-  );
-
-  towers.forEach((tower, index) => {
-    const fill = tower.querySelector(".tower-fill");
-
-    const required = (index + 1) * 10;
-
-    if (fill) {
-      fill.style.height =
-        Math.min(100, Math.max(0, progress - required + 10)) + "%";
-    }
-
-    if (progress >= required && correctTotal >= 30) {
-      tower.classList.add("completed");
-    } else {
-      tower.classList.remove("completed");
-    }
-  });
-}
-
-// KEYBOARD LAYOUTS
-
-const keyboardLayouts = {
-  QWERTY: [
-    "qwertyuiop",
-    "asdfghjkl;",
-    "zxcvbnm,./"
-  ],
-
-  AZERTY: [
-    "azertyuiop",
-    "qsdfghjklm",
-    "wxcvbn,;:!"
-  ],
-
-  QWERTZ: [
-    "qwertzuiop",
-    "asdfghjkl;",
-    "yxcvbnm,./"
-  ]
-};
-
-// FIND FINGER
-
-function fingerForKey(character) {
-  return fingerMap[character.toLowerCase()] || "thumb";
-}
-
-// CREATE KEYBOARD
-
-function createKeyboard() {
-  const keyboard = document.getElementById("keyboard");
-
-  if (!keyboard) return;
-
-  keyboard.innerHTML = "";
-
-  const rows = keyboardLayouts[selectedLayout] || keyboardLayouts.QWERTY;
-
-  rows.forEach(row => {
-    const rowElement = document.createElement("div");
-
-    rowElement.className = "keyboard-row";
-
-    [...row].forEach(character => {
-      const key = document.createElement("div");
-
-      key.className = "key";
-      key.id = "key-" + character;
-
-      key.textContent = character.toUpperCase();
-
-      rowElement.appendChild(key);
-    });
-
-    keyboard.appendChild(rowElement);
-  });
-
-  const space = document.createElement("div");
-
-  space.className = "key space-key";
-  space.id = "key-space";
-  space.textContent = "SPACE";
-
-  keyboard.appendChild(space);
-}
-
-// GET KEY ELEMENT
-
-function keyElement(character) {
-  if (character === " ") {
-    return document.getElementById("key-space");
-  }
-
-  return document.getElementById("key-" + character);
-}
-
-// GENERATE TARGET
-
-function makeTarget() {
-  const keys = lessonKeys[currentLesson] || "asdfjkl;";
-
-  const stage = stages[stageIndex];
-
-  let letters = [];
-
-  for (let i = 0; i < stage.count; i++) {
-    const randomIndex = Math.floor(Math.random() * keys.length);
-
-    letters.push(keys[randomIndex]);
-  }
-
-  if (stage.direction === "ascending") {
-    letters.sort();
-  } else {
-    letters.sort().reverse();
-  }
-
-  return letters.join("");
-}
-
-// NEXT TARGET
-
-function nextTarget() {
-  if (stageIndex >= stages.length) {
-    stageIndex = 0;
-  }
-
-  targetText = makeTarget();
-
-  targetIndex = 0;
-
-  showTarget();
-}
-
-// SHOW TARGET
-
-function showTarget() {
-  const target = document.getElementById("targetText");
-
-  if (!target) return;
-
-  target.innerHTML = "";
-
-  [...targetText].forEach((character, index) => {
-    const span = document.createElement("span");
-
-    span.textContent = character.toUpperCase();
-
-    if (index < targetIndex) {
-      span.className = "correct";
-    } else if (index === targetIndex) {
-      span.className = "current";
-    }
-
-    target.appendChild(span);
-  });
-
-  highlightFinger(targetText[targetIndex]);
-
-  highlightKeyboardKey(targetText[targetIndex]);
-}
-
-// HIGHLIGHT FINGER
-
-function highlightFinger(character) {
-  document.querySelectorAll(".finger").forEach(finger => {
-    finger.classList.remove("active-finger");
-  });
-
-  const fingerName = fingerForKey(character);
-
-  const active = document.querySelector(
-    "." + fingerName
-  );
-
-  if (active) {
-    active.classList.add("active-finger");
-  }
-}
-
-// HIGHLIGHT KEYBOARD KEY
-
-function highlightKeyboardKey(character) {
-  document.querySelectorAll(".key").forEach(key => {
-    key.style.outline = "";
-  });
-
-  const element = keyElement(character);
-
-  if (element) {
-    element.style.outline = "3px solid #1556b8";
-  }
-}
-
-
-// =====================================
-// PART 2-B: TYPING, RESULTS AND CONTROLS
 // =====================================
 
-// FOCUS INPUT
+function selectLesson(index){
 
-function focusTyping() {
-  const input = document.getElementById("typingInput");
-
-  if (input) {
-    input.value = "";
-    input.focus();
-  }
+if(index >= 4 && !adminUnlocked){
+alert("This lesson is locked. Premium access is required.");
+return;
 }
 
-// TYPING INPUT EVENT
+currentLesson = index;
 
-const typingInput = document.getElementById("typingInput");
+document.getElementById("practiceTitle").textContent =
+"Lesson " + (index+1) + ": " + lessonNames[index];
 
-if (typingInput) {
-  typingInput.addEventListener("keydown", function(event) {
+startPractice();
 
-    if (!practiceActive || practicePaused) return;
-
-    if (
-      event.key === "Shift" ||
-      event.key === "Control" ||
-      event.key === "Alt" ||
-      event.key === "Meta"
-    ) {
-      return;
-    }
-
-    if (event.key.length !== 1) return;
-
-    event.preventDefault();
-
-    const typedCharacter = event.key.toLowerCase();
-    const expectedCharacter = targetText[targetIndex];
-
-    typedTotal++;
-
-    if (typedCharacter === expectedCharacter.toLowerCase()) {
-
-      correctTotal++;
-
-      targetIndex++;
-
-      const target = document.getElementById("targetText");
-
-      if (target) {
-        target.classList.remove("wrong");
-      }
-
-      if (targetIndex >= targetText.length) {
-        stageIndex++;
-
-        if (stageIndex >= stages.length) {
-          stageIndex = 0;
-        }
-
-        nextTarget();
-
-      } else {
-        showTarget();
-      }
-
-    } else {
-
-      wrongTotal++;
-
-      const target = document.getElementById("targetText");
-
-      if (target) {
-        target.classList.add("wrong");
-      }
-
-      const key = keyElement(expectedCharacter);
-
-      if (key) {
-        key.classList.add("wrong-key");
-
-        setTimeout(() => {
-          key.classList.remove("wrong-key");
-        }, 300);
-      }
-    }
-
-    updateTowers();
-
-    updateTypingStats();
-  });
 }
 
-// TYPING STATISTICS
+// =====================================
+// HIDDEN ADMIN ACCESS
+// CLICK LOGO 5 TIMES
+// =====================================
 
-function updateTypingStats() {
-  const accuracy = typedTotal > 0
-    ? Math.round((correctTotal / typedTotal) * 100)
-    : 100;
+document.getElementById("logo").addEventListener("click",titleAdminClick);
 
-  const accuracyElement = document.getElementById("liveAccuracy");
+function titleAdminClick(){
 
-  if (accuracyElement) {
-    accuracyElement.textContent = accuracy + "%";
-  }
+adminClicks++;
 
-  const speedElement = document.getElementById("liveWpm");
+clearTimeout(clickResetTimer);
 
-  if (speedElement) {
-    const minutes = (300 - timeLeft) / 60;
+clickResetTimer = setTimeout(()=>{
+adminClicks = 0;
+},2000);
 
-    const wpm = minutes > 0
-      ? Math.round((correctTotal / 5) / minutes)
-      : 0;
+if(adminClicks >= 5){
 
-    speedElement.textContent = wpm;
-  }
+adminClicks = 0;
+
+document.getElementById("adminModal").style.display = "flex";
+document.getElementById("adminPassword").value = "";
+document.getElementById("passwordError").textContent = "";
+
 }
 
-// PAUSE PRACTICE
-
-function pausePractice() {
-  if (!practiceActive) return;
-
-  practicePaused = true;
-
-  const pauseButton = document.getElementById("pauseButton");
-
-  if (pauseButton) {
-    pauseButton.style.display = "none";
-  }
-
-  const resumeButton = document.getElementById("resumeButton");
-
-  if (resumeButton) {
-    resumeButton.style.display = "inline-block";
-  }
 }
 
-// RESUME PRACTICE
+function checkAdmin(){
 
-function resumePractice() {
-  if (!practiceActive) return;
+const password = document.getElementById("adminPassword").value;
 
-  practicePaused = false;
+if(password === "786786"){
 
-  const pauseButton = document.getElementById("pauseButton");
+adminUnlocked = true;
 
-  if (pauseButton) {
-    pauseButton.style.display = "inline-block";
-  }
-
-  const resumeButton = document.getElementById("resumeButton");
-
-  if (resumeButton) {
-    resumeButton.style.display = "none";
-  }
-
-  focusTyping();
-}
-
-// RESTART PRACTICE
-
-function restartPractice() {
-  const confirmRestart = confirm(
-    "Do you want to restart this practice?"
-  );
-
-  if (confirmRestart) {
-    resetPractice();
-  }
-}
-
-// FINISH PRACTICE
-
-function finishPractice() {
-  if (!practiceActive) return;
-
-  practiceActive = false;
-  practicePaused = false;
-
-  stopTimer();
-
-  const elapsedTime = 300 - timeLeft;
-
-  const minutes = Math.max(elapsedTime / 60, 1 / 60);
-
-  const grossWpm = Math.round(
-    (typedTotal / 5) / minutes
-  );
-
-  const accuracy = typedTotal > 0
-    ? Math.round((correctTotal / typedTotal) * 100)
-    : 0;
-
-  const netWpm = Math.round(
-    (correctTotal / 5) / minutes
-  );
-
-  // DISPLAY RESULTS
-
-  const timeResult = document.getElementById("resultTime");
-
-  if (timeResult) {
-    timeResult.textContent = formatTime(elapsedTime);
-  }
-
-  const grossResult = document.getElementById("grossWpm");
-
-  if (grossResult) {
-    grossResult.textContent = grossWpm;
-  }
-
-  const accuracyResult = document.getElementById("accuracy");
-
-  if (accuracyResult) {
-    accuracyResult.textContent = accuracy + "%";
-  }
-
-  const netResult = document.getElementById("netWpm");
-
-  if (netResult) {
-    netResult.textContent = netWpm;
-  }
-
-  const difficultResult = document.getElementById("difficultKeys");
-
-  if (difficultResult) {
-    difficultResult.textContent =
-      "Total mistakes: " + wrongTotal;
-  }
-
-  const practice = document.getElementById("practiceScreen");
-
-  if (practice) {
-    practice.style.display = "none";
-  }
-
-  const results = document.getElementById("resultsScreen");
-
-  if (results) {
-    results.style.display = "block";
-  } else {
-    alert(
-      "Practice completed!\n\n" +
-      "Time: " + formatTime(elapsedTime) + "\n" +
-      "Gross WPM: " + grossWpm + "\n" +
-      "Accuracy: " + accuracy + "%\n" +
-      "Net WPM: " + netWpm
-    );
-  }
-}
-
-// FORMAT TIME
-
-function formatTime(seconds) {
-  seconds = Math.max(0, seconds);
-
-  const minutes = Math.floor(seconds / 60);
-
-  const remainingSeconds = seconds % 60;
-
-  return (
-    String(minutes).padStart(2, "0") +
-    ":" +
-    String(remainingSeconds).padStart(2, "0")
-  );
-}
-
-// EXIT PRACTICE
-
-function exitPractice() {
-  const confirmExit = confirm(
-    "Do you want to exit this practice?"
-  );
-
-  if (confirmExit) {
-    stopTimer();
-
-    practiceActive = false;
-    practicePaused = false;
-
-    const practice = document.getElementById("practiceScreen");
-
-    if (practice) {
-      practice.style.display = "none";
-    }
-
-    const dashboard = document.getElementById("dashboard");
-
-    if (dashboard) {
-      dashboard.style.display = "block";
-    }
-  }
-}
-
-// RETURN TO DASHBOARD FROM RESULTS
-
-function returnToDashboard() {
-  const results = document.getElementById("resultsScreen");
-
-  if (results) {
-    results.style.display = "none";
-  }
-
-  const dashboard = document.getElementById("dashboard");
-
-  if (dashboard) {
-    dashboard.style.display = "block";
-  }
-}
-
-// INITIALIZE APP
+document.getElementById("adminModal").style.display = "none";
 
 renderLessons();
+
+alert("Admin access enabled. All lessons are unlocked.");
+
+}else{
+
+document.getElementById("passwordError").textContent =
+"Incorrect password. Please try again.";
+
+}
+
+}
+
+function closeAdmin(){
+document.getElementById("adminModal").style.display = "none";
+}
+
+// =====================================
+// NAVIGATION
+// =====================================
+
+function goHome(){
+
+if(practiceActive){
+if(!confirm("Exit the current practice?")) return;
+}
+
+stopTimer();
+
+practiceActive = false;
+practicePaused = false;
+
+document.getElementById("practice").style.display = "none";
+document.getElementById("dashboard").style.display = "block";
+document.getElementById("footer").style.display = "block";
+
+}
+
+function showMessage(name){
+alert(name + " will be available in a future update.");
+}
+
+// =====================================
+// KEYBOARD LAYOUT
+// =====================================
+
+const keyboardLayouts = {
+
+QWERTY:[
+"qwertyuiop",
+"asdfghjkl;",
+"zxcvbnm,./"
+],
+
+AZERTY:[
+"azertyuiop",
+"qsdfghjklm",
+"wxcvbn,;:!"
+],
+
+QWERTZ:[
+"qwertzuiop",
+"asdfghjkl;",
+"yxcvbnm,./"
+]
+
+};
+
+function changeLayout(layout){
+
+selectedLayout = layout;
+
+createKeyboard();
+
+}
+
+// =====================================
+// START PRACTICE
+// =====================================
+
+function startPractice(){
+
+document.getElementById("dashboard").style.display = "none";
+document.getElementById("footer").style.display = "none";
+document.getElementById("practice").style.display = "block";
+
+document.getElementById("result").style.display = "none";
+
+resetPractice();
+
+}
+
+// =====================================
+// RESET PRACTICE
+// =====================================
+
+function resetPractice(){
+
+stopTimer();
+
+practiceActive = true;
+practicePaused = false;
+
+timeLeft = 300;
+
+correctTotal = 0;
+wrongTotal = 0;
+typedTotal = 0;
+
+targetIndex = 0;
+stageIndex = 0;
+
+targetText = "";
+
+keyMistakes = {};
+
+document.getElementById("pauseMessage").style.display = "none";
+document.getElementById("result").style.display = "none";
+
+document.getElementById("correctCount").textContent = "0";
+document.getElementById("wrongCount").textContent = "0";
+
+createTowers();
+updateTimerDisplay();
+createKeyboard();
+
+nextTarget();
+
+focusTyping();
+
+startTimer();
+
+}
+
+// =====================================
+// TIMER
+// =====================================
+
+function startTimer(){
+
+stopTimer();
+
+timerInterval = setInterval(()=>{
+
+if(!practiceActive || practicePaused) return;
+
+timeLeft--;
+
+updateTimerDisplay();
+
+if(timeLeft <= 0){
+finishPractice();
+}
+
+},1000);
+
+}
+
+function stopTimer(){
+
+if(timerInterval){
+clearInterval(timerInterval);
+timerInterval = null;
+}
+
+}
+
+function updateTimerDisplay(){
+
+document.getElementById("timer").textContent =
+formatTime(timeLeft);
+
+}
+
+// =====================================
+// PROGRESS TOWERS
+// =====================================
+
+function createTowers(){
+
+const container = document.getElementById("towers");
+
+container.innerHTML = "";
+
+for(let i=0;i<10;i++){
+
+const tower = document.createElement("div");
+
+tower.className = "tower";
+
+tower.innerHTML = `<div class="tower-fill"></div>`;
+
+container.appendChild(tower);
+
+}
+
+updateTowers();
+
+}
+
+function updateTowers(){
+
+const towers = document.querySelectorAll(".tower");
+
+towers.forEach((tower,index)=>{
+
+const required = (index+1)*30;
+
+const fill = tower.querySelector(".tower-fill");
+
+const percentage = Math.min(
+100,
+Math.max(0,(correctTotal-(index*30))/30*100)
+);
+
+fill.style.height = percentage + "%";
+
+if(correctTotal >= required){
+tower.classList.add("green");
+}else{
+tower.classList.remove("green");
+}
+
+});
+
+// Complete practice when all 10 towers are green.
+
+if(correctTotal >= 300 && practiceActive){
+finishPractice();
+}
+
+}
+
+// =====================================
+// CREATE KEYBOARD
+// =====================================
+
+function createKeyboard(){
+
+const keyboard = document.getElementById("keyboard");
+
+keyboard.innerHTML = "";
+
+const rows = keyboardLayouts[selectedLayout];
+
+rows.forEach(row=>{
+
+const rowElement = document.createElement("div");
+rowElement.className = "keyboard-row";
+
+[...row].forEach(character=>{
+
+const key = document.createElement("div");
+
+key.className = "key";
+key.id = "key-" + character;
+
+key.textContent = character.toUpperCase();
+
+rowElement.appendChild(key);
+
+});
+
+keyboard.appendChild(rowElement);
+
+});
+
+const space = document.createElement("div");
+
+space.className = "key space";
+space.id = "key-space";
+space.textContent = "SPACE";
+
+keyboard.appendChild(space);
+
+}
+
+// =====================================
+// KEY ELEMENT
+// =====================================
+
+function keyElement(character){
+
+if(character === " "){
+return document.getElementById("key-space");
+}
+
+return document.getElementById("key-" + character);
+
+}
+
+// =====================================
+// GENERATE TARGET
+// =====================================
+
+function makeTarget(){
+
+const keys = lessonKeys[currentLesson];
+
+const stage = stages[stageIndex];
+
+let letters = [];
+
+for(let i=0;i<stage.count;i++){
+
+const randomIndex = Math.floor(Math.random()*keys.length);
+
+letters.push(keys[randomIndex]);
+
+}
+
+letters.sort();
+
+if(stage.direction === "descending"){
+letters.reverse();
+}
+
+return letters.join("");
+
+}
+
+// =====================================
+// NEXT TARGET
+// =====================================
+
+function nextTarget(){
+
+if(stageIndex >= stages.length){
+stageIndex = 0;
+}
+
+targetText = makeTarget();
+
+targetIndex = 0;
+
+showTarget();
+
+}
+
+// =====================================
+// SHOW TARGET
+// =====================================
+
+function showTarget(){
+
+const container = document.getElementById("targets");
+
+container.innerHTML = "";
+
+[...targetText].forEach((character,index)=>{
+
+const span = document.createElement("span");
+
+span.className = "target";
+span.textContent = character.toUpperCase();
+
+if(index < targetIndex){
+span.classList.add("correct");
+}
+
+if(index === targetIndex){
+span.classList.add("active");
+}
+
+container.appendChild(span);
+
+});
+
+highlightFinger(targetText[targetIndex]);
+highlightKeyboardKey(targetText[targetIndex]);
+
+}
+
+// =====================================
+// FINGER HIGHLIGHT
+// =====================================
+
+function fingerForKey(character){
+
+return fingerMap[character.toLowerCase()] || "left-index";
+
+}
+
+function highlightFinger(character){
+
+document.querySelectorAll(".finger").forEach(finger=>{
+finger.classList.remove("active");
+});
+
+const fingerName = fingerForKey(character);
+
+const active = document.getElementById(fingerName);
+
+if(active){
+active.classList.add("active");
+}
+
+}
+
+// =====================================
+// KEYBOARD HIGHLIGHT
+// =====================================
+
+function highlightKeyboardKey(character){
+
+document.querySelectorAll(".key").forEach(key=>{
+key.classList.remove("active-key");
+});
+
+const element = keyElement(character);
+
+if(element){
+element.classList.add("active-key");
+}
+
+}
+
+// =====================================
+// INPUT FOCUS
+// =====================================
+
+function focusTyping(){
+
+const input = document.getElementById("typingInput");
+
+input.value = "";
+
+input.focus();
+
+}
+
+// =====================================
+// TYPING INPUT
+// =====================================
+
+document.getElementById("typingInput").addEventListener("keydown",function(event){
+
+if(!practiceActive || practicePaused) return;
+
+if(
+event.key === "Shift" ||
+event.key === "Control" ||
+event.key === "Alt" ||
+event.key === "Meta"
+){
+return;
+}
+
+if(event.key.length !== 1) return;
+
+event.preventDefault();
+
+const typedCharacter = event.key.toLowerCase();
+
+const expectedCharacter = targetText[targetIndex].toLowerCase();
+
+typedTotal++;
+
+if(typedCharacter === expectedCharacter){
+
+correctTotal++;
+
+targetIndex++;
+
+const key = keyElement(expectedCharacter);
+
+if(key){
+key.classList.add("correct");
+}
+
+if(targetIndex >= targetText.length){
+
+stageIndex++;
+
+if(stageIndex >= stages.length){
+stageIndex = 0;
+}
+
+nextTarget();
+
+}else{
+
+showTarget();
+
+}
+
+}else{
+
+wrongTotal++;
+
+keyMistakes[expectedCharacter] =
+(keyMistakes[expectedCharacter] || 0)+1;
+
+const targets = document.querySelectorAll(".target");
+
+if(targets[targetIndex]){
+targets[targetIndex].classList.add("wrong");
+}
+
+const key = keyElement(expectedCharacter);
+
+if(key){
+key.classList.add("wrong");
+
+setTimeout(()=>{
+key.classList.remove("wrong");
+},300);
+}
+
+}
+
+document.getElementById("correctCount").textContent = correctTotal;
+document.getElementById("wrongCount").textContent = wrongTotal;
+
+updateTowers();
+
+updateTypingStats();
+
+});
+
+// =====================================
+// LIVE STATISTICS
+// =====================================
+
+function updateTypingStats(){
+
+const accuracy = typedTotal > 0
+? Math.round((correctTotal/typedTotal)*100)
+: 100;
+
+const elapsed = 300-timeLeft;
+
+const minutes = Math.max(elapsed/60,1/60);
+
+const wpm = Math.round((correctTotal/5)/minutes);
+
+document.getElementById("progressTitle").textContent =
+"Current practice: " + lessonNames[currentLesson];
+
+document.getElementById("progressText").textContent =
+"Correct: " + correctTotal +
+" | Wrong: " + wrongTotal +
+" | Accuracy: " + accuracy + "%" +
+" | Speed: " + wpm + " WPM";
+
+}
+
+// =====================================
+// PAUSE
+// =====================================
+
+function pausePractice(){
+
+if(!practiceActive) return;
+
+practicePaused = true;
+
+document.getElementById("pauseMessage").style.display = "block";
+
+}
+
+// =====================================
+// RESUME
+// =====================================
+
+function resumePractice(){
+
+if(!practiceActive) return;
+
+practicePaused = false;
+
+document.getElementById("pauseMessage").style.display = "none";
+
+focusTyping();
+
+}
+
+// =====================================
+// RESTART
+// =====================================
+
+function restartPractice(){
+
+if(confirm("Do you want to restart this practice?")){
+
+resetPractice();
+
+}
+
+}
+
+// =====================================
+// FINISH PRACTICE
+// =====================================
+
+function finishPractice(){
+
+if(!practiceActive) return;
+
+practiceActive = false;
+practicePaused = false;
+
+stopTimer();
+
+const elapsedTime = 300-timeLeft;
+
+const minutes = Math.max(elapsedTime/60,1/60);
+
+const grossWpm = Math.round((typedTotal/5)/minutes);
+
+const accuracy = typedTotal > 0
+? Math.round((correctTotal/typedTotal)*100)
+: 0;
+
+const netWpm = Math.round((correctTotal/5)/minutes);
+
+const savedTime = timeLeft;
+
+document.getElementById("timeUsedResult").textContent =
+formatTime(elapsedTime);
+
+document.getElementById("savedTimeResult").textContent =
+formatTime(savedTime);
+
+document.getElementById("grossSpeedResult").textContent =
+grossWpm + " WPM";
+
+document.getElementById("accuracyResult").textContent =
+accuracy + "%";
+
+document.getElementById("speedResult").textContent =
+netWpm + " WPM";
+
+const difficult = document.getElementById("difficultKeys");
+
+difficult.innerHTML = "";
+
+const mistakes = Object.entries(keyMistakes)
+.sort((a,b)=>b[1]-a[1]);
+
+if(mistakes.length === 0){
+
+difficult.textContent = "No difficult keys yet.";
+
+}else{
+
+mistakes.forEach(([key,count])=>{
+
+const item = document.createElement("span");
+
+item.className = "difficult-key";
+
+item.textContent = key.toUpperCase() + ": " + count;
+
+difficult.appendChild(item);
+
+});
+
+}
+
+document.getElementById("result").style.display = "block";
+
+document.getElementById("typingInput").blur();
+
+}
+
+// =====================================
+// FORMAT TIME
+// =====================================
+
+function formatTime(seconds){
+
+seconds = Math.max(0,seconds);
+
+const minutes = Math.floor(seconds/60);
+
+const remainingSeconds = seconds%60;
+
+return (
+String(minutes).padStart(2,"0") +
+":" +
+String(remainingSeconds).padStart(2,"0")
+);
+
+}
+
+// =====================================
+// EXIT PRACTICE
+// =====================================
+
+function exitPractice(){
+
+if(!confirm("Do you want to exit this practice?")) return;
+
+stopTimer();
+
+practiceActive = false;
+practicePaused = false;
+
+document.getElementById("practice").style.display = "none";
+
+document.getElementById("dashboard").style.display = "block";
+
+document.getElementById("footer").style.display = "block";
+
+}
+
+// =====================================
+// INITIALIZE APP
+// =====================================
+
+renderLessons();
+
+createTowers();
 
 createKeyboard();
 
 updateTimerDisplay();
-// =====================================
-// END OF PART 2
-// =====================================
 
 </script>
+
 </body>
 </html>
-
